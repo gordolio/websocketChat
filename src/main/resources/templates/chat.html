@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello WebSocket</title>
+    <script src="/js/jquery-2.2.0.min.js"></script>
+    <script src="/js/sockjs.min.js"></script>
+    <script src="/js/stomp.js"></script>
+    <script src="/js/index.js"></script>
+</head>
+<body>
+<div>
+    <div>
+        <p id="response"></p>
+    </div>
+    <div id="conversationDiv">
+        <label for="message">Message:</label>
+        <input type="text" id="message" disabled="disabled"/>
+        <button id="sendMessage" disabled="disabled">Send</button>
+    </div>
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username"/><br/>
+        <label for="sessionId">Session Id:</label>
+        <input type="text" id="sessionId"/><br/>
+        <button id="createSession">Create Session</button>
+        <button id="joinSession">Join Session</button><br/>
+        <button id="disconnect" disabled="disabled">Disconnect</button>
+    </div>
+</div>
+</body>
+</html>
