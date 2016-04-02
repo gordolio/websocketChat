@@ -1,7 +1,14 @@
 package com.gordonchild.websocket;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -15,6 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class WebConfig extends WebMvcConfigurationSupport {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WebConfig.class);
 
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
@@ -43,9 +52,18 @@ public class WebConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
-        registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
-        registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/static/fonts/");
-        registry.addResourceHandler("/bootstrap/**").addResourceLocations("classpath:/static/bootstrap/");
+        try {
+            InputStream stream = WebConfig.class.getResourceAsStream("/resourcesMapping.csv");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            while(null != (line = reader.readLine())) {
+                String[] split = line.split("\\|");
+                if(split.length > 1 && StringUtils.isNotEmpty(split[0]) && StringUtils.isNotEmpty(split[1])) {
+                    registry.addResourceHandler(split[0].trim()).addResourceLocations(split[1].trim());
+                }
+            }
+        } catch(IOException ex) {
+            LOG.error("Error mapping resources", ex);
+        }
     }
 }

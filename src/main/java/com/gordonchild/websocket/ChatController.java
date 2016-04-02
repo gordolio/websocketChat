@@ -6,11 +6,14 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gordonchild.websocket.chat.ChatSessionService;
-import com.gordonchild.websocket.domain.SendMessageRequest;
-import com.gordonchild.websocket.domain.UserJoinRequest;
-import com.gordonchild.websocket.domain.UserLeaveRequest;
+import com.gordonchild.websocket.chat.ChatRoomService;
+import com.gordonchild.websocket.domain.ChatSession;
+import com.gordonchild.websocket.domain.StartChatRequest;
+import com.gordonchild.websocket.domain.request.JoinRoomRequest;
+import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
+import com.gordonchild.websocket.domain.request.SendMessageRequest;
 
 @Controller
 public class ChatController implements ErrorController {
@@ -18,16 +21,11 @@ public class ChatController implements ErrorController {
     private static final String ERROR_PATH = "/error";
 
     @Autowired
-    private ChatSessionService chatSessionService;
+    private ChatRoomService chatRoomService;
 
     @RequestMapping("/")
     public String home() {
         return "index";
-    }
-
-    @RequestMapping("/chat")
-    public String chat() {
-        return "chat";
     }
 
     @RequestMapping(ERROR_PATH)
@@ -35,19 +33,26 @@ public class ChatController implements ErrorController {
         return "error";
     }
 
+    @RequestMapping("/startChat")
+    @ResponseBody
+    public ChatSession startSession(StartChatRequest request) {
+        return this.chatRoomService.startSession(request);
+    }
+
+
     @MessageMapping("/sendMessage")
     public void sendMessage(@Payload SendMessageRequest sendMessageRequest) {
-        this.chatSessionService.sendMessage(sendMessageRequest);
+        this.chatRoomService.sendMessage(sendMessageRequest);
     }
 
     @MessageMapping("/userJoin")
-    public void userJoin(@Payload UserJoinRequest user) {
-        this.chatSessionService.userJoin(user);
+    public void userJoin(@Payload JoinRoomRequest user) {
+        this.chatRoomService.userJoin(user);
     }
 
     @MessageMapping("/userLeave")
-    public void userLeave(@Payload UserLeaveRequest user) {
-        this.chatSessionService.userLeave(user);
+    public void userLeave(@Payload LeaveRoomRequest user) {
+        this.chatRoomService.userLeave(user);
     }
 
     @Override

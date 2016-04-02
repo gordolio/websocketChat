@@ -1,8 +1,6 @@
-package com.gordonchild.websocket.domain;
+package com.gordonchild.websocket.domain.request;
 
-import com.gordonchild.websocket.domain.event.UserEvent;
-
-public class ChatMessage extends UserEvent {
+public class SendMessageRequest extends RoomRequest {
 
     private String message;
 
@@ -13,4 +11,5 @@ public class ChatMessage extends UserEvent {
     public void setMessage(String message) {
         this.message = message;
     }
+
 }

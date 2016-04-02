@@ -1,6 +1,6 @@
 package com.gordonchild.websocket.domain;
 
-public class UserEvent extends SocketData {
+public class StartChatRequest {
 
     private String username;
 

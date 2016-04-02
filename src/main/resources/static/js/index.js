@@ -1,27 +1,24 @@
 $(function() {
     var controller = {
         chatContentDiv:$("#chatContent"),
+        chatUsersDiv:$("#chatUsers"),
         initChat:function(username,room){
             var me = this;
             chatController.init({
                 onConnect:function(){
                     $("#roomName").html(room);
-                    $("#loginArea").animate({
-                        "opacity":0.0
-                    }, {
-                        "duration":300,
-                        "easing":"linear",
-                        "complete":function(){
-                            $(this).css("display","none");
-                            $("#mainBlock").animateCss("growMainArea",function(){
-                                $(this).removeClass("loginBlock").addClass("chatBlock");
-                                $("#chatWrapper")
-                                    .css("display","block")
-                                    .animate({
-                                        opacity:1.0
+                    $("#loginArea").animateCss("hideArea",function(){
+                        $(this).css("display","none");
+                        $("#mainBlock").animateCss("growMainArea",function() {
+                            $(this).removeClass("loginBlock").addClass("chatBlock");
+                            $("#chatWrapper")
+                                .css("display", "block")
+                                .animateCss("showArea",function () {
+                                    $(".nano").nanoScroller({
+                                        alwaysVisible: true
                                     });
-                            });
-                        }
+                                });
+                        });
                     });
                 },
                 onDisconnect:function(){
@@ -32,12 +29,18 @@ $(function() {
                         $("<p/>").text(chatMessage.username + ": " + chatMessage.message)
                             .addClass("chatLine")
                     );
-                    me.chatContentDiv.animate({ scrollTop: me.chatContentDiv.prop("scrollHeight")}, 1000);
+                    $(".nano.chatNanoWrapper").nanoScroller().nanoScroller({ scroll: 'bottom' });
                 },
                 onJoin:function(joinMessage){
+                    me.chatUsersDiv.append(
+                        $("<div></div>")
+                            .attr("id","userId"+joinMessage.publicId)
+                            .text(joinMessage.username)
+                    );
                     me.announce(joinMessage.username, " has joined");
                 },
                 onLeave:function(leaveMessage){
+                    $("#userId" + leaveMessage.publicId).remove();
                     me.announce(leaveMessage.username, " has left");
                 }
             });
@@ -51,7 +54,7 @@ $(function() {
                     ).append($("<span/>").text(announcement))
                     .addClass("chatLine")
             );
-            this.chatContentDiv.animate({ scrollTop: this.chatContentDiv.prop("scrollHeight")}, 1000);
+            $(".nano").nanoScroller().nanoScroller({ scroll: 'bottom' });
         },
         sendTheMessage:function(){
             var sendInput = $("#sendMessage");

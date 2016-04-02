@@ -20,6 +20,7 @@ body {
     color: #333;
     text-align: center;
     text-shadow: 0 1px 3px rgba(0,0,0,.25);
+    overflow:hidden;
 }
 
 div#mainBlock {
@@ -47,7 +48,7 @@ Chat
 */
 
 div.chatBlock {
-    max-width:600px;
+    max-width:900px;
     height:500px;
 }
 
@@ -69,6 +70,27 @@ div#chatWrapper > header {
     padding-bottom:10px;
     padding-left:10px;
 }
+div#chatArea{
+    height:100%;
+    width:100%;
+}
+div.chat-users-wrapper{
+    height:100%;
+    width:40%;
+    float:right;
+    padding-left:10px;
+}
+div#chatUsers {
+    height:100%;
+    width:100%;
+    background-color:#ddd;
+    box-shadow:inset 0 0 5px rgba(0,0,0,.5);
+    border-radius:5px;
+    border:1px solid #999;
+    overflow-y:scroll;
+    text-align:left;
+    padding:5px;
+}
 div#chatContent{
     height:100%;
     width:100%;
@@ -76,9 +98,15 @@ div#chatContent{
     box-shadow:inset 0 0 5px rgba(0,0,0,.5);
     border-radius:5px;
     border:1px solid #999;
-    text-align:left;
     overflow-y:scroll;
+    text-align:left;
+    padding:5px;
 }
+.nano.chat-content{
+    width:60%;
+    float:left;
+}
+.nano .nano-slider { background: #111; }
 div#chatWrapper footer {
     padding-top:10px;
     padding-bottom:10px;

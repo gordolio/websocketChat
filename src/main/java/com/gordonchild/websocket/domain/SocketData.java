@@ -11,19 +11,9 @@ import com.gordonchild.websocket.util.JodaDateTimeSerializer;
 @JsonTypeInfo(use=JsonTypeInfo.Id.NAME, property="type")
 public class SocketData {
 
-    private String sessionId;
-
     @JsonSerialize(using=JodaDateTimeSerializer.class)
     @JsonDeserialize(using=JodaDateTimeDeserializer.class)
     private DateTime time = new DateTime();
-
-    public String getSessionId() {
-        return this.sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
 
     public DateTime getTime() {
         return this.time;
