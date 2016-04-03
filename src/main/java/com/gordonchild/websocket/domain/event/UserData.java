@@ -2,7 +2,7 @@ package com.gordonchild.websocket.domain.event;
 
 import com.gordonchild.websocket.domain.SocketData;
 
-public class UserEvent extends SocketData {
+public class UserData extends SocketData {
 
     private String username;
     private String publicId;

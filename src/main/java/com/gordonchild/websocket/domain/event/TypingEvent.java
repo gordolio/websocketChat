@@ -1,4 +1,4 @@
 package com.gordonchild.websocket.domain.event;
 
-public class TypingEvent extends UserEvent {
+public class TypingEvent extends UserData {
 }

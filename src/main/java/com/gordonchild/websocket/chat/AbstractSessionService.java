@@ -15,16 +15,25 @@ public abstract class AbstractSessionService<RQ, S extends Session> implements S
 
     private Class<S> clazz;
     private Map<String,S> sessionMap;
+    private Map<String,S> socketSessionMap;
 
     public AbstractSessionService(Class<S> clazz) {
         this.clazz = clazz;
         this.sessionMap = new ConcurrentHashMap<>();
+        this.socketSessionMap = new ConcurrentHashMap<>();
     }
 
+    @Override
     public S getSession(String sessionId) {
         return this.sessionMap.get(sessionId);
     }
 
+    @Override
+    public S getSocketSession(String socketSessionId) {
+        return this.socketSessionMap.get(socketSessionId);
+    }
+
+    @Override
     public S startSession(RQ sessionRequest) {
         S session = null;
         try {
@@ -41,7 +50,36 @@ public abstract class AbstractSessionService<RQ, S extends Session> implements S
 
     protected abstract void populateSession(S session, RQ sessionRequest);
 
+    @Override
     public void removeSession(String sessionId) {
+        S session = this.sessionMap.get(sessionId);
+        if(session == null) {
+            return;
+        }
+        if(session.getSocketSessionId() != null) {
+            this.socketSessionMap.remove(session.getSocketSessionId());
+        }
         this.sessionMap.remove(sessionId);
+    }
+
+    @Override
+    public void removeSocketSession(String socketSessionId) {
+        S session = this.socketSessionMap.get(socketSessionId);
+        if(session != null) {
+            this.removeSession(session.getSessionId());
+        }
+    }
+
+    @Override
+    public void updateSocketSessionId(String sessionId, String socketSessionId) {
+        S session = this.getSession(sessionId);
+        if(session == null) {
+            return;
+        }
+        if(session.getSocketSessionId() != null) {
+            this.socketSessionMap.remove(session.getSocketSessionId());
+        }
+        session.setSocketSessionId(socketSessionId);
+        this.socketSessionMap.put(socketSessionId, session);
     }
 }

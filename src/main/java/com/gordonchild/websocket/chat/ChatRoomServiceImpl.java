@@ -1,5 +1,7 @@
 package com.gordonchild.websocket.chat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,7 +16,7 @@ import com.gordonchild.websocket.domain.ChatSession;
 import com.gordonchild.websocket.domain.StartChatRequest;
 import com.gordonchild.websocket.domain.event.JoinEvent;
 import com.gordonchild.websocket.domain.event.LeaveEvent;
-import com.gordonchild.websocket.domain.event.UserEvent;
+import com.gordonchild.websocket.domain.event.UserData;
 import com.gordonchild.websocket.domain.request.JoinRoomRequest;
 import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
 import com.gordonchild.websocket.domain.request.RoomRequest;
@@ -42,7 +44,7 @@ public class ChatRoomServiceImpl extends AbstractSessionService<StartChatRequest
         ChatSession session = this.getSession(request.getSessionId());
         ChatMessage chatMessage = this.createChatEvent(session, ChatMessage.class);
         chatMessage.setMessage(request.getMessage());
-        this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getSessionId(), chatMessage);
+        this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), chatMessage);
     }
 
     @Override
@@ -50,7 +52,17 @@ public class ChatRoomServiceImpl extends AbstractSessionService<StartChatRequest
         ChatSession session = this.getSession(request.getSessionId());
         RoomInfo roomInfo = this.getRoom(request);
         roomInfo.addUser(session);
+        session.setRoomName(request.getRoomName());
         JoinEvent joinEvent = this.createChatEvent(session, JoinEvent.class);
+        List<UserData> users = new ArrayList<>();
+        roomInfo.getUsers().forEach(user->{
+            UserData userData = new UserData();
+            userData.setUsername(user.getUsername());
+            userData.setPublicId(user.getPublicId());
+            userData.setTime(null);
+            users.add(userData);
+        });
+        joinEvent.setAllUsers(users);
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), joinEvent);
     }
 
@@ -65,16 +77,19 @@ public class ChatRoomServiceImpl extends AbstractSessionService<StartChatRequest
     }
 
     private RoomInfo getRoom(RoomRequest room) {
-        RoomInfo roomInfo = this.rooms.get(room.getRoomName());
+        return this.getRoom(room.getRoomName());
+    }
+    private RoomInfo getRoom(String roomName) {
+        RoomInfo roomInfo = this.rooms.get(roomName);
 
         if(roomInfo == null) {
-            roomInfo = new RoomInfo(room.getRoomName());
-            this.rooms.put(room.getRoomName(), roomInfo);
+            roomInfo = new RoomInfo(roomName);
+            this.rooms.put(roomName, roomInfo);
         }
         return roomInfo;
     }
 
-    private <T extends UserEvent> T createChatEvent(ChatSession session, Class<T> clazz) {
+    private <T extends UserData> T createChatEvent(ChatSession session, Class<T> clazz) {
         T obj = null;
         try {
             obj = clazz.newInstance();

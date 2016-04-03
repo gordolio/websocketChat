@@ -48,8 +48,8 @@ var chatController = {
     leaveRoom:function() {
         if(this.stompClient !== null) {
             this.stompClient.send("/chatApp/userLeave", {}, JSON.stringify({
-                "userId": this.userId,
-                "sessionId": this.sessionId
+                sessionId: this.sessionId,
+                roomName: this.roomName
             }));
         }
         this.disconnect();
@@ -64,6 +64,9 @@ var chatController = {
                 var chatMessage = JSON.parse(message.body);
                 me.showMessage(chatMessage);
             });
+            me.stompClient.send("/chatApp/socketConnect",{},JSON.stringify({
+                "sessionId":me.sessionId
+            }));
             me.stompClient.send("/chatApp/userJoin",{},JSON.stringify({
                 "sessionId":me.sessionId,
                 "roomName":me.roomName

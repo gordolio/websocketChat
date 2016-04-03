@@ -32,12 +32,16 @@ $(function() {
                     $(".nano.chatNanoWrapper").nanoScroller().nanoScroller({ scroll: 'bottom' });
                 },
                 onJoin:function(joinMessage){
-                    me.chatUsersDiv.append(
-                        $("<div></div>")
-                            .attr("id","userId"+joinMessage.publicId)
-                            .text(joinMessage.username)
-                    );
                     me.announce(joinMessage.username, " has joined");
+                    $.each(joinMessage.allUsers,function(idx,user) {
+                        if($("#userId"+user.publicId).size() === 0) {
+                            me.chatUsersDiv.append(
+                                $("<div></div>")
+                                    .attr("id","userId"+user.publicId)
+                                    .text(user.username)
+                            );
+                        }
+                    });
                 },
                 onLeave:function(leaveMessage){
                     $("#userId" + leaveMessage.publicId).remove();
@@ -90,7 +94,7 @@ $(function() {
         localStorage.setItem("room", room.val());
         controller.initChat(name.val(),room.val());
     });
-    $(window).on("beforeunload",function(){
+    $(window).unload(function(){
         chatController.leaveRoom();
     });
     var name = localStorage.getItem("name");
