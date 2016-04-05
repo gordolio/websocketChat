@@ -25,7 +25,6 @@ jar {
 }
 
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 version = '1.0'
 
 configurations {
@@ -36,32 +35,17 @@ repositories {
    mavenCentral()
 }
 
-//tasks.withType(BootRunTask) {
-   // systemProperty('RDS_DB_NAME', 'alexa_moroni')
-   // systemProperty('RDS_USERNAME', 'alexa_user')
-   // systemProperty('RDS_PASSWORD', 'password')
-   // systemProperty('RDS_HOSTNAME', 'localhost')
-   // systemProperty('RDS_PORT', '3307')
-//}
-
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compile 'org.springframework.boot:spring-boot-starter-test'
     compile 'org.springframework.boot:spring-boot-starter-websocket'
     compile 'org.springframework:spring-messaging'
-    //compile 'org.hibernate:hibernate-core'
-    //compile 'org.hibernate:hibernate-entitymanager'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.7.1'
     compile 'com.fasterxml.jackson.core:jackson-core:2.7.1'
     compile 'joda-time:joda-time:2.9.2'
-    //compile 'mysql:mysql-connector-java:5.1.37'
-
-    //compile fileTree(dir: 'libs', include: '*.jar')
-
-    //optional 'org.springframework.boot:spring-boot-configuration-processor'
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 

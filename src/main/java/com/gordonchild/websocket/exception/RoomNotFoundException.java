@@ -1,4 +1,4 @@
-package com.gordonchild.websocket.chat;
+package com.gordonchild.websocket.exception;
 
 public class RoomNotFoundException extends RuntimeException {
 

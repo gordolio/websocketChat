@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.gordonchild.websocket.domain.ChatSession;
+import com.gordonchild.websocket.domain.session.ChatSession;
 
 public class RoomInfo {
 
@@ -23,7 +23,7 @@ public class RoomInfo {
     }
 
     public Collection<ChatSession> getUsers() {
-        return Collections.unmodifiableCollection(users.values());
+        return Collections.unmodifiableCollection(this.users.values());
     }
 
     public ChatSession getUser(String userId) {

@@ -1,4 +1,4 @@
-package com.gordonchild.websocket.chat;
+package com.gordonchild.websocket.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.gordonchild.websocket.domain.ChatMessage;
-import com.gordonchild.websocket.domain.ChatSession;
-import com.gordonchild.websocket.domain.StartChatRequest;
 import com.gordonchild.websocket.domain.event.JoinEvent;
 import com.gordonchild.websocket.domain.event.LeaveEvent;
 import com.gordonchild.websocket.domain.event.UserData;
@@ -22,9 +20,10 @@ import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
 import com.gordonchild.websocket.domain.request.RoomRequest;
 import com.gordonchild.websocket.domain.request.SendMessageRequest;
 import com.gordonchild.websocket.domain.server.RoomInfo;
+import com.gordonchild.websocket.domain.session.ChatSession;
 
 @Service("chatRoomService")
-public class ChatRoomServiceImpl extends AbstractSessionService<StartChatRequest,ChatSession> implements ChatRoomService {
+public class ChatRoomServiceImpl implements ChatRoomService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChatRoomService.class);
 
@@ -33,15 +32,14 @@ public class ChatRoomServiceImpl extends AbstractSessionService<StartChatRequest
     private Map<String,RoomInfo> rooms = new ConcurrentHashMap<>();
 
     @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private SessionService sessionService;
 
-    public ChatRoomServiceImpl() {
-        super(ChatSession.class);
-    }
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public void sendMessage(SendMessageRequest request) {
-        ChatSession session = this.getSession(request.getSessionId());
+        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
         ChatMessage chatMessage = this.createChatEvent(session, ChatMessage.class);
         chatMessage.setMessage(request.getMessage());
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), chatMessage);
@@ -49,17 +47,17 @@ public class ChatRoomServiceImpl extends AbstractSessionService<StartChatRequest
 
     @Override
     public void userJoin(JoinRoomRequest request) {
-        ChatSession session = this.getSession(request.getSessionId());
+        ChatSession chatSession = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
+        chatSession.setUsername(request.getUsername());
         RoomInfo roomInfo = this.getRoom(request);
-        roomInfo.addUser(session);
-        session.setRoomName(request.getRoomName());
-        JoinEvent joinEvent = this.createChatEvent(session, JoinEvent.class);
+        roomInfo.addUser(chatSession);
+        chatSession.setRoomName(request.getRoomName());
+        JoinEvent joinEvent = this.createChatEvent(chatSession, JoinEvent.class);
         List<UserData> users = new ArrayList<>();
-        roomInfo.getUsers().forEach(user->{
+        roomInfo.getUsers().forEach(userSession->{
             UserData userData = new UserData();
-            userData.setUsername(user.getUsername());
-            userData.setPublicId(user.getPublicId());
-            userData.setTime(null);
+            userData.setUsername(userSession.getUsername());
+            userData.setPublicId(userSession.getPublicId());
             users.add(userData);
         });
         joinEvent.setAllUsers(users);
@@ -68,12 +66,20 @@ public class ChatRoomServiceImpl extends AbstractSessionService<StartChatRequest
 
     @Override
     public void userLeave(LeaveRoomRequest request) {
-        ChatSession session = this.getSession(request.getSessionId());
+        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
         RoomInfo roomInfo = this.getRoom(request);
         roomInfo.removeUser(session);
-        this.removeSession(session.getSessionId());
+        if(roomInfo.getUsers().isEmpty()) {
+            this.rooms.remove(roomInfo.getRoomName());
+        }
+        this.sessionService.removeSession(session.getSessionId());
         LeaveEvent leaveEvent = this.createChatEvent(session, LeaveEvent.class);
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), leaveEvent);
+    }
+
+    @Override
+    public ChatSession getSocketSession(String socketSessionId) {
+        return this.sessionService.getSocketSession(socketSessionId, ChatSession.class);
     }
 
     private RoomInfo getRoom(RoomRequest room) {
@@ -89,20 +95,16 @@ public class ChatRoomServiceImpl extends AbstractSessionService<StartChatRequest
         return roomInfo;
     }
 
-    private <T extends UserData> T createChatEvent(ChatSession session, Class<T> clazz) {
+    private <T extends UserData> T createChatEvent(ChatSession chatSession, Class<T> clazz) {
         T obj = null;
         try {
             obj = clazz.newInstance();
-            obj.setUsername(session.getUsername());
-            obj.setPublicId(session.getPublicId());
+            obj.setUsername(chatSession.getUsername());
+            obj.setPublicId(chatSession.getPublicId());
         } catch(ReflectiveOperationException ex) {
             LOG.error("error instantiating chat event", ex);
         }
         return obj;
     }
 
-    @Override
-    protected void populateSession(ChatSession session, StartChatRequest sessionRequest) {
-        session.setUsername(sessionRequest.getUsername());
-    }
 }

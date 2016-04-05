@@ -35,11 +35,8 @@ var chatController = {
         this.roomName = room;
         var me = this;
         $.ajax({
-            url:"/startChat",
-            contentType:"application/json;charset=UTF-8",
-            data:{
-                username:this.username
-            }
+            url:"/startSession",
+            contentType:"application/json;charset=UTF-8"
         }).done(function(data){
             me.sessionId = data.sessionId;
             me.connect();
@@ -69,7 +66,8 @@ var chatController = {
             }));
             me.stompClient.send("/chatApp/userJoin",{},JSON.stringify({
                 "sessionId":me.sessionId,
-                "roomName":me.roomName
+                "roomName":me.roomName,
+                "username":me.username
             }));
         });
     },

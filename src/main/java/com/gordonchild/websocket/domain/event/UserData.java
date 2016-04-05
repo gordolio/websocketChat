@@ -1,8 +1,9 @@
 package com.gordonchild.websocket.domain.event;
 
-import com.gordonchild.websocket.domain.SocketData;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-public class UserData extends SocketData {
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME,property="type")
+public class UserData {
 
     private String username;
     private String publicId;

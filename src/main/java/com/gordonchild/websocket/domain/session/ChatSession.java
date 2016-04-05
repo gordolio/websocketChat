@@ -1,6 +1,6 @@
-package com.gordonchild.websocket.domain;
+package com.gordonchild.websocket.domain.session;
 
-public class ChatSession extends Session {
+public abstract class ChatSession implements Session {
 
     private String username;
     private String roomName;
@@ -20,4 +20,5 @@ public class ChatSession extends Session {
     public void setRoomName(String roomName) {
         this.roomName = roomName;
     }
+
 }
