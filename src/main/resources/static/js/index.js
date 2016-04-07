@@ -2,6 +2,51 @@ $(function() {
     var controller = {
         chatContentDiv:$("#chatContent"),
         chatUsersDiv:$("#chatUsers"),
+        typingFeedbackDiv:$("#typingFeedback"),
+        usersTypingTimeouts:{},
+        typingTimeout:function(event) {
+            delete this.usersTypingTimeouts[event.publicId];
+            this.renderTypingDiv();
+        },
+        clearPossibleTimeout:function(event){
+            if(typeof this.usersTypingTimeouts[event.publicId] === 'object') {
+                clearTimeout(this.usersTypingTimeouts[event.publicId].timeoutId);
+                this.typingTimeout(event);
+            }
+        },
+        createTypingTimeout:function(event){
+            var me = this;
+            if(!utils.isEmpty(this.usersTypingTimeouts[event.publicId])) {
+                clearTimeout(this.usersTypingTimeouts[event.publicId].timeoutId);
+            }
+            this.usersTypingTimeouts[event.publicId] = {
+                username:event.username,
+                publicId:event.publicId,
+                timeoutId:setTimeout(function(){
+                    me.typingTimeout(event);
+                },6000)
+            };
+            this.renderTypingDiv();
+        },
+        renderTypingDiv:function(){
+            var text = "";
+            var count = 0;
+            $.each(this.usersTypingTimeouts,function(publicId,val){
+                if(count > 0) {
+                    text += ", ";
+                }
+                text += val.username;
+                count++;
+            });
+            if(count === 0) {
+                this.typingFeedbackDiv.hide();
+                return;
+            }
+            text += (count > 1 ? " are" : " is") + " typing...";
+            this.typingFeedbackDiv.text(text);
+            this.typingFeedbackDiv.show();
+            $(".nano").nanoScroller().nanoScroller({ scroll: 'bottom' });
+        },
         initChat:function(username,room){
             var me = this;
             chatController.init({
@@ -21,15 +66,15 @@ $(function() {
                         });
                     });
                 },
-                onDisconnect:function(){
-
+                onTyping:function(event) {
+                    me.createTypingTimeout(event);
                 },
                 onMessage:function(chatMessage){
-                    me.chatContentDiv.append(
+                    me.clearPossibleTimeout(chatMessage);
+                    me.appendMessage(
                         $("<p/>").text(chatMessage.username + ": " + chatMessage.message)
                             .addClass("chatLine")
                     );
-                    $(".nano.chatNanoWrapper").nanoScroller().nanoScroller({ scroll: 'bottom' });
                 },
                 onJoin:function(joinMessage){
                     me.announce(joinMessage.username, " has joined");
@@ -51,19 +96,23 @@ $(function() {
             chatController.joinRoom(username,room);
         },
         announce:function(username, announcement){
-            this.chatContentDiv.append(
-                $("<p/>")
-                    .append(
-                        $("<strong/>").text(username)
-                    ).append($("<span/>").text(announcement))
-                    .addClass("chatLine")
-            );
+            this.appendMessage($("<p/>")
+                .append(
+                    $("<strong/>").text(username)
+                ).append($("<span/>").text(announcement))
+                .addClass("chatLine"));
+        },
+        appendMessage:function(messageElem){
+            this.typingFeedbackDiv.before(messageElem);
             $(".nano").nanoScroller().nanoScroller({ scroll: 'bottom' });
         },
         sendTheMessage:function(){
             var sendInput = $("#sendMessage");
             chatController.sendMessage(sendInput.val());
             sendInput.val("");
+        },
+        typing:function() {
+            chatController.typing();
         }
     };
 
@@ -73,6 +122,8 @@ $(function() {
     $("#sendMessage").keydown(function(event){
         if ( event.which === 13 ) {
             controller.sendTheMessage();
+        } else {
+            controller.typing();
         }
     });
     $("#startChat").click(function() {

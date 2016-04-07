@@ -4,8 +4,6 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -18,8 +16,6 @@ import javassist.util.proxy.ProxyFactory;
 
 @Service("sessionService")
 public class SessionServiceImpl implements SessionService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(SessionServiceImpl.class);
 
     private Map<String,BaseSessionInternal> sessionMap;
     private Map<String,BaseSessionInternal> socketSessionMap;
@@ -46,7 +42,7 @@ public class SessionServiceImpl implements SessionService {
         }
         T contextData = session.getSessionData(context);
         if(contextData == null) {
-            contextData = makeSessionContext(session, context);
+            contextData = this.makeSessionContext(session, context);
             session.putSessionData(contextData);
         }
         return contextData;
@@ -104,14 +100,14 @@ public class SessionServiceImpl implements SessionService {
         this.socketSessionMap.put(socketSessionId, baseSession);
     }
 
-    private static <T extends Session> T makeSessionContext(final Session existingSession, Class<T> clazz) {
+    private <T extends Session> T makeSessionContext(final Session existingSession, Class<T> clazz) {
         ProxyFactory factory = new ProxyFactory();
         factory.setSuperclass(clazz);
         factory.setFilter(method-> Modifier.isAbstract(method.getModifiers()));
-        MethodHandler h = (self, thisMethod, proceed, args)
-                -> thisMethod.invoke(existingSession, args);
+        MethodHandler handler = (self, thisMethod, proceed, args)
+                    -> thisMethod.invoke(existingSession, args);
         try {
-            return (T) factory.create(new Class<?>[]{}, new Object[]{}, h);
+            return (T) factory.create(new Class<?>[]{}, new Object[]{}, handler);
         } catch(ReflectiveOperationException ex) {
             throw new RuntimeException("Error creating proxy", ex);
         }

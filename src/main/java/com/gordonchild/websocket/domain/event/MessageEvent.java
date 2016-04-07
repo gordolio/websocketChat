@@ -1,8 +1,6 @@
-package com.gordonchild.websocket.domain;
+package com.gordonchild.websocket.domain.event;
 
-import com.gordonchild.websocket.domain.event.UserData;
-
-public class ChatMessage extends UserData {
+public class MessageEvent extends UserData {
 
     private String message;
 

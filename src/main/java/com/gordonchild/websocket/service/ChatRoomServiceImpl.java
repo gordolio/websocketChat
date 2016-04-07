@@ -11,14 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import com.gordonchild.websocket.domain.ChatMessage;
+import com.gordonchild.websocket.domain.event.MessageEvent;
 import com.gordonchild.websocket.domain.event.JoinEvent;
 import com.gordonchild.websocket.domain.event.LeaveEvent;
+import com.gordonchild.websocket.domain.event.TypingEvent;
 import com.gordonchild.websocket.domain.event.UserData;
 import com.gordonchild.websocket.domain.request.JoinRoomRequest;
 import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
 import com.gordonchild.websocket.domain.request.RoomRequest;
 import com.gordonchild.websocket.domain.request.SendMessageRequest;
+import com.gordonchild.websocket.domain.request.UserTypingRequest;
 import com.gordonchild.websocket.domain.server.RoomInfo;
 import com.gordonchild.websocket.domain.session.ChatSession;
 
@@ -40,7 +42,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public void sendMessage(SendMessageRequest request) {
         ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
-        ChatMessage chatMessage = this.createChatEvent(session, ChatMessage.class);
+        MessageEvent chatMessage = this.createChatEvent(session, MessageEvent.class);
         chatMessage.setMessage(request.getMessage());
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), chatMessage);
     }
@@ -49,8 +51,10 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     public void userJoin(JoinRoomRequest request) {
         ChatSession chatSession = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
         chatSession.setUsername(request.getUsername());
+
         RoomInfo roomInfo = this.getRoom(request);
         roomInfo.addUser(chatSession);
+
         chatSession.setRoomName(request.getRoomName());
         JoinEvent joinEvent = this.createChatEvent(chatSession, JoinEvent.class);
         List<UserData> users = new ArrayList<>();
@@ -75,6 +79,13 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         this.sessionService.removeSession(session.getSessionId());
         LeaveEvent leaveEvent = this.createChatEvent(session, LeaveEvent.class);
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), leaveEvent);
+    }
+
+    @Override
+    public void userTyping(UserTypingRequest request) {
+        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
+        TypingEvent typingEvent = this.createChatEvent(session, TypingEvent.class);
+        this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), typingEvent);
     }
 
     @Override

@@ -4,11 +4,14 @@ var chatController = {
     sessionId:null,
     username:null,
     roomName:null,
+    typingSetTimeout:null,
+    typingTimeoutHit:false,
     onConnect:function(){},
     onDisconnect:function(){},
     onMessage:function(){},
     onJoin:function(){},
     onLeave:function(){},
+    onTyping:function(){},
     options:{},
     init:function(opt) {
         this.options = opt;
@@ -17,6 +20,7 @@ var chatController = {
         this.overrideOrDefault("onMessage");
         this.overrideOrDefault("onJoin");
         this.overrideOrDefault("onLeave");
+        this.overrideOrDefault("onTyping");
     },
     overrideOrDefault:function(name) {
         if(typeof this.options[name] === 'function') {
@@ -59,12 +63,12 @@ var chatController = {
             me.setConnected(true);
             me.stompClient.subscribe('/topic/chats-'+me.roomName, function (message) {
                 var chatMessage = JSON.parse(message.body);
-                me.showMessage(chatMessage);
+                me.showEvent(chatMessage);
             });
             me.stompClient.send("/chatApp/socketConnect",{},JSON.stringify({
                 "sessionId":me.sessionId
             }));
-            me.stompClient.send("/chatApp/userJoin",{},JSON.stringify({
+            me.stompClient.send("/chatApp/joinRoom",{},JSON.stringify({
                 "sessionId":me.sessionId,
                 "roomName":me.roomName,
                 "username":me.username
@@ -85,14 +89,33 @@ var chatController = {
             "message":message
         };
         this.stompClient.send("/chatApp/sendMessage", {}, JSON.stringify(data));
+        if(this.typingSetTimeout !== null) {
+            clearTimeout(this.typingSetTimeout);
+            this.typingSetTimeout = null;
+        }
     },
-    showMessage: function (chatMessage) {
-        if(chatMessage.type === 'JoinEvent') {
-            this.onJoin(chatMessage);
-        } else if(chatMessage.type === 'LeaveEvent') {
-            this.onLeave(chatMessage);
+    typing:function() {
+        var me = this;
+        if(me.typingSetTimeout == null) {
+            var data = {
+                "sessionId":me.sessionId,
+                "roomName":me.roomName
+            };
+            me.stompClient.send("/chatApp/userTyping", {}, JSON.stringify(data));
+            me.typingSetTimeout = setTimeout(function() {
+                me.typingSetTimeout = null;
+            },4000);
+        }
+    },
+    showEvent: function (event) {
+        if(event.type === 'JoinEvent') {
+            this.onJoin(event);
+        } else if(event.type === 'LeaveEvent') {
+            this.onLeave(event);
+        } else if(event.type === 'TypingEvent') {
+            this.onTyping(event);
         } else {
-            this.onMessage(chatMessage);
+            this.onMessage(event);
         }
     }
 };

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.gordonchild.websocket.domain.request.JoinRoomRequest;
 import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
 import com.gordonchild.websocket.domain.request.SendMessageRequest;
+import com.gordonchild.websocket.domain.request.UserTypingRequest;
 import com.gordonchild.websocket.service.ChatRoomService;
 
 @Controller
@@ -35,12 +36,17 @@ public class ChatController implements ErrorController {
         this.chatRoomService.sendMessage(sendMessageRequest);
     }
 
-    @MessageMapping("/userJoin")
+    @MessageMapping("/joinRoom")
     public void userJoin(@Payload JoinRoomRequest user) {
         this.chatRoomService.userJoin(user);
     }
 
-    @MessageMapping("/userLeave")
+    @MessageMapping("/userTyping")
+    public void userTyping(@Payload UserTypingRequest user) {
+        this.chatRoomService.userTyping(user);
+    }
+
+    @MessageMapping("/leaveRoom")
     public void userLeave(@Payload LeaveRoomRequest user) {
         this.chatRoomService.userLeave(user);
     }
