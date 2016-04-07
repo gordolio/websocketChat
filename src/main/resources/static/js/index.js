@@ -1,6 +1,6 @@
 $(function() {
     var controller = {
-        chatContentDiv:$("#chatContent"),
+        chatContentDiv:$("#chatInnerContent"),
         chatUsersDiv:$("#chatUsers"),
         typingFeedbackDiv:$("#typingFeedback"),
         usersTypingTimeouts:{},
@@ -84,6 +84,7 @@ $(function() {
                                 $("<div></div>")
                                     .attr("id","userId"+user.publicId)
                                     .text(user.username)
+                                    .addClass("userLine")
                             );
                         }
                     });
