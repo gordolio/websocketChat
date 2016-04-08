@@ -12,6 +12,8 @@ var chatController = {
     onJoin:function(){},
     onLeave:function(){},
     onTyping:function(){},
+    onVote:function(){},
+    onReveal:function(){},
     options:{},
     init:function(opt) {
         this.options = opt;
@@ -21,6 +23,8 @@ var chatController = {
         this.overrideOrDefault("onJoin");
         this.overrideOrDefault("onLeave");
         this.overrideOrDefault("onTyping");
+        this.overrideOrDefault("onVote");
+        this.overrideOrDefault("onReveal");
     },
     overrideOrDefault:function(name) {
         if(typeof this.options[name] === 'function') {
@@ -94,6 +98,21 @@ var chatController = {
             this.typingSetTimeout = null;
         }
     },
+    vote:function(vote){
+        var data = {
+            "sessionId":this.sessionId,
+            "roomName":this.roomName,
+            "vote":vote
+        };
+        this.stompClient.send("/chatApp/userVote", {}, JSON.stringify(data));
+    },
+    reveal:function() {
+        var data = {
+            "sessionId":this.sessionId,
+            "roomName":this.roomName
+        };
+        this.stompClient.send("/chatApp/revealVotes", {}, JSON.stringify(data));
+    },
     typing:function() {
         var me = this;
         if(me.typingSetTimeout == null) {
@@ -114,6 +133,10 @@ var chatController = {
             this.onLeave(event);
         } else if(event.type === 'TypingEvent') {
             this.onTyping(event);
+        } else if(event.type === 'VoteEvent') {
+            this.onVote(event);
+        } else if(event.type === 'RevealVotesEvent') {
+            this.onReveal(event);
         } else {
             this.onMessage(event);
         }

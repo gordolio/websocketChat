@@ -49,12 +49,12 @@ Chat
 
 div.chatBlock {
     max-width:900px;
-    height:500px;
+    height:550px;
 }
 
 div#chatWrapper{
     height:100%;
-    padding:40px 0 50px 0;
+    padding:40px 0 100px 0;
     top:0;
     bottom:0;
     left:0;
@@ -107,8 +107,8 @@ div#chatContentWrapper,div#chatUsersWrapper{
 div#chatWrapper footer {
     padding-top:10px;
     padding-bottom:10px;
-    margin-bottom:-60px;
-    height:60px;
+    margin-bottom:-70px;
+    height:70px;
 }
 div#chatWrapper > footer input {
     height:40px;
@@ -133,6 +133,73 @@ div#chatWrapper > footer button {
     color:#777;
 }
 
+.vote.btn-group {
+    margin-top:10px;
+}
+.clearVote {
+    float:left;
+    margin-top:10px;
+}
+.btn.glyphicon {
+    top:0;
+}
+.reveal {
+    float:right;
+    margin-top:10px;
+}
+.glyphicon img {
+    width:15px;
+    margin-top:-3px;
+}
+.glyphicon.glyphicon-ok-sign.voted {
+    float:right;
+    margin-top:2px;
+}
+
+.glyph.ZERO::before{
+    content:'0';
+    float:right;
+}
+.glyph.HALF::before{
+    content:'1/2';
+    float:right;
+}
+.glyph.ONE::before{
+    content:'1';
+    float:right;
+}
+.glyph.TWO::before{
+    content:'2';
+    float:right;
+}
+.glyph.THREE::before{
+    content:'3';
+    float:right;
+}
+.glyph.FIVE::before{
+    content:'5';
+    float:right;
+}
+.glyph.EIGHT::before{
+    content:'8';
+    float:right;
+}
+.glyph.THIRTEEN::before{
+    content:'13';
+    float:right;
+}
+.glyph.BREAK {
+    background: url("/image/glyphicons-halflings-278-coffee-cup@3x.png") no-repeat;
+    background-size: 12px;
+    width: 13px;
+    height: 13px;
+    margin-top: 5px;
+    float: right;
+}
+span.glyph.glyphicon.glyphicon-question-sign {
+    float:right;
+    margin-top:3px;
+}
 
 /*
 Others
@@ -151,8 +218,8 @@ Others
 .cover-container {
     margin:50px auto 50px auto;
     height:100%;
-    padding-top:50px;
-    padding-bottom:50px;
+    padding-top:10px;
+    padding-bottom:100px;
 }
 
 /* Padding for spacing */

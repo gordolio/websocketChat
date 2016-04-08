@@ -83,8 +83,9 @@ $(function() {
                             me.chatUsersDiv.append(
                                 $("<div></div>")
                                     .attr("id","userId"+user.publicId)
-                                    .text(user.username)
                                     .addClass("userLine")
+                                    .append($("<span class='username'>"+user.username+"</span>"))
+                                    .append($("<span class='glyph'></span>"))
                             );
                         }
                     });
@@ -92,6 +93,34 @@ $(function() {
                 onLeave:function(leaveMessage){
                     $("#userId" + leaveMessage.publicId).remove();
                     me.announce(leaveMessage.username, " has left");
+                },
+                onVote:function(vote) {
+                    if(vote.didClear) {
+                        $("#userId" + vote.publicId)
+                            .find(".glyph")
+                            .removeClass()
+                            .addClass("glyph");
+                        me.announce(vote.username, " has un-voted.");
+                    } else {
+                        $("#userId" + vote.publicId)
+                            .find(".glyph")
+                            .removeClass()
+                            .addClass("glyph glyphicon glyphicon-ok-sign voted");
+                        me.announce(vote.username, " has voted.");
+                    }
+                },
+                onReveal:function(votes) {
+                    me.announce(votes.username, " revealed the votes.");
+                    $.each(votes.votes,function(idx,val){
+                        var glyphSpan = $("#userId" + val.publicId)
+                            .find(".glyph")
+                            .removeClass();
+                        if(val.vote === 'QUESTION') {
+                            glyphSpan.addClass("glyph glyphicon glyphicon-question-sign");
+                        } else {
+                            glyphSpan.addClass(val.vote + " glyph");
+                        }
+                    });
                 }
             });
             chatController.joinRoom(username,room);
@@ -116,6 +145,13 @@ $(function() {
             chatController.typing();
         }
     };
+
+    $("div.clearVote > button,div.vote > button").click(function(){
+        chatController.vote($(this).attr('data-vote'));
+    });
+    $("#revealButton").click(function(){
+        chatController.reveal();
+    });
 
     $("#sendButton").click(function() {
         controller.sendTheMessage();

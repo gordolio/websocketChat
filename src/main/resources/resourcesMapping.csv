@@ -9,3 +9,5 @@
 /mstile**.png             |classpath:/static/favicon/
 /manifest.json            |classpath:/static/favicon/
 /safari-pinned-tab.svg    |classpath:/static/favicon/
+/image/**                 |classpath:/static/image/
+/fonts/**                 |classpath:/static/fonts/
