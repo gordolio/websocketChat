@@ -59,12 +59,16 @@ $(function() {
                             $("#chatWrapper")
                                 .css("display", "block")
                                 .animateCss("showArea",function () {
+                                    $(this).css("opacity","1");
                                     $(".nano").nanoScroller({
                                         alwaysVisible: true
                                     });
                                 });
                         });
                     });
+                },
+                onDisconnect:function(event) {
+                    
                 },
                 onTyping:function(event) {
                     me.createTypingTimeout(event);

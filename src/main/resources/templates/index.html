@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <title>Hello WebSocket</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png"/>
@@ -85,9 +85,6 @@
                                 <button class="btn btn-default" type="button" id="sendButton">Send</button>
                             </span>
                         </div>
-                        <div class="clearVote btn-group" role="group" aria-label="">
-                            <button type="button" data-vote="CLEAR" class="btn btn-default">Clear My Vote</button>
-                        </div>
                         <div class="vote btn-group" role="group" aria-label="">
                             <button type="button" data-vote="QUESTION" class="btn btn-default glyphicon glyphicon-question-sign"></button>
                             <button type="button" data-vote="ZERO" class="btn btn-default">0</button>
@@ -103,8 +100,11 @@
                                 <img src="/image/glyphicons-halflings-278-coffee-cup@3x.png"/>
                             </button>
                         </div>
+                        <div class="clearVote btn-group" role="group" aria-label="">
+                            <button type="button" data-vote="CLEAR" class="btn btn-default"></button>
+                        </div>
                         <div id="revealButton" class="reveal btn-group" role="group" aria-label="">
-                            <button type="button" class="btn btn-default">Reveal Votes</button>
+                            <button type="button" class="btn btn-default"></button>
                         </div>
                     </footer>
                 </div>
