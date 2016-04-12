@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.gordonchild.websocket.domain.request.ClearVotingRequest;
 import com.gordonchild.websocket.domain.request.JoinRoomRequest;
 import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
 import com.gordonchild.websocket.domain.request.RevealVoteRequest;
@@ -61,6 +62,11 @@ public class ChatController implements ErrorController {
     @MessageMapping("/revealVotes")
     public void revealVote(@Payload RevealVoteRequest request) {
         this.chatRoomService.revealVotes(request);
+    }
+
+    @MessageMapping("/clearVoting")
+    public void clearVoting(@Payload ClearVotingRequest request) {
+        this.chatRoomService.clearVoting(request);
     }
 
     @Override

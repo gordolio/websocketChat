@@ -1,4 +1,4 @@
 package com.gordonchild.websocket.domain.event;
 
-public class VoteEvent extends UserData {
+public class ClearVotesEvent extends UserData {
 }

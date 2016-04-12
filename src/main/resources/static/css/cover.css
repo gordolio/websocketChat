@@ -110,7 +110,7 @@ div#chatWrapper > footer button {
     color:#777;
 }
 
-.vote.btn-group {
+.vote-btn-group.btn-group {
     margin-top:10px;
 }
 .clearVote {
@@ -122,59 +122,69 @@ div#chatWrapper > footer button {
 .reveal {
     margin-top:10px;
 }
-.glyphicon img {
-    width:15px;
-    margin-top:-3px;
-}
-.glyphicon.glyphicon-ok-sign.voted {
+.vote {
     float:right;
+}
+button img {
+    width:15px;
+    margin-top:-4px;
+}
+.vote.HIDDEN::before,.vote.QUESTION::before {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     margin-top:2px;
 }
-
-.glyph.ZERO::before{
-    content:'0';
-    float:right;
+.vote.CLEAR::before {
+    content:'';
 }
-.glyph.HALF::before{
-    content:'1/2';
-    float:right;
+.vote.HIDDEN::before{
+    content:'\e084';
 }
-.glyph.ONE::before{
-    content:'1';
-    float:right;
+.vote.QUESTION::before {
+    content:'\e085';
 }
-.glyph.TWO::before{
-    content:'2';
-    float:right;
-}
-.glyph.THREE::before{
-    content:'3';
-    float:right;
-}
-.glyph.FIVE::before{
-    content:'5';
-    float:right;
-}
-.glyph.EIGHT::before{
-    content:'8';
-    float:right;
-}
-.glyph.THIRTEEN::before{
-    content:'13';
-    float:right;
-}
-.glyph.BREAK {
+.vote.BREAK {
     background: url("/image/glyphicons-halflings-278-coffee-cup@3x.png") no-repeat;
-    background-size: 12px;
-    width: 13px;
-    height: 13px;
-    margin-top: 5px;
-    float: right;
+    background-size: 15px;
+    margin-top:4px;
+    height:15px;
+    width:15px;
 }
-span.glyph.glyphicon.glyphicon-question-sign {
-    float:right;
-    margin-top:3px;
+.vote.ZERO::before{
+    content:'0';
 }
+.vote.HALF::before{
+    content:'½';
+}
+.vote.ONE::before{
+    content:'1';
+}
+.vote.TWO::before{
+    content:'2';
+}
+.vote.THREE::before{
+    content:'3';
+}
+.vote.FIVE::before{
+    content:'5';
+}
+.vote.EIGHT::before{
+    content:'8';
+}
+.vote.THIRTEEN::before{
+    content:'13';
+}
+.vote.TWENTY_ONE::before{
+    content:'21';
+}
+
 @media (max-width:10000px) {
     div#chatWrapper{
         height:100%;
@@ -210,12 +220,6 @@ span.glyph.glyphicon.glyphicon-question-sign {
         border-radius: 10px;
         /*height:100%;*/
     }
-    #revealButton > button::before {
-        content:'Reveal';
-    }
-    .clearVote > button::before {
-        content:'Clear My Vote';
-    }
     div#chatWrapper > footer input,div#chatWrapper > footer button {
         height:40px;
     }
@@ -248,9 +252,6 @@ span.glyph.glyphicon.glyphicon-question-sign {
         margin:0 auto 0 auto;
         padding-bottom:0;
     }
-    #revealButton > button::before {
-        content:'Reveal';
-    }
     div#mainBlock {
         background-color: #acacac;
         padding: 5px;
@@ -264,9 +265,6 @@ span.glyph.glyphicon.glyphicon-question-sign {
     .btn.btn-default {
         padding:2px 7px;
     }
-    .clearVote > button::before {
-        content:'Clear';
-    }
     div#chatWrapper > footer input,div#chatWrapper > footer button {
         height:30px;
     }
@@ -278,12 +276,12 @@ span.glyph.glyphicon.glyphicon-question-sign {
         margin-bottom:0;
     }
 }
-@media (max-width:398px) {
+@media (max-width:427px) {
     div#chatWrapper {
         padding-bottom:109px;
     }
 }
-@media(max-width:292px) {
+@media(max-width:300px) {
     div#chatWrapper {
         padding-bottom:140px;
     }

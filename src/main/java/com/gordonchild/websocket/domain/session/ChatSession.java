@@ -6,7 +6,8 @@ public abstract class ChatSession implements Session {
 
     private String username;
     private String roomName;
-    private UserVoteRequest.VoteType currentVote;
+    private UserVoteRequest.VoteType currentVote = UserVoteRequest.VoteType.CLEAR;
+    private boolean voteHidden = true;
 
     public String getUsername() {
         return this.username;
@@ -30,5 +31,13 @@ public abstract class ChatSession implements Session {
 
     public void setCurrentVote(UserVoteRequest.VoteType currentVote) {
         this.currentVote = currentVote;
+    }
+
+    public boolean isVoteHidden() {
+        return this.voteHidden;
+    }
+
+    public void setVoteHidden(boolean voteHidden) {
+        this.voteHidden = voteHidden;
     }
 }

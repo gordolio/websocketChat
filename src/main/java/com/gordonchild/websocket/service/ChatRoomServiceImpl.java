@@ -1,7 +1,5 @@
 package com.gordonchild.websocket.service;
 
-import static com.gordonchild.websocket.domain.request.UserVoteRequest.VoteType.CLEAR;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,19 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import com.gordonchild.websocket.domain.event.MessageEvent;
+import com.gordonchild.websocket.domain.event.ClearVotesEvent;
 import com.gordonchild.websocket.domain.event.JoinEvent;
 import com.gordonchild.websocket.domain.event.LeaveEvent;
+import com.gordonchild.websocket.domain.event.MessageEvent;
 import com.gordonchild.websocket.domain.event.RevealVotesEvent;
 import com.gordonchild.websocket.domain.event.TypingEvent;
 import com.gordonchild.websocket.domain.event.UserData;
 import com.gordonchild.websocket.domain.event.UserVoteData;
 import com.gordonchild.websocket.domain.event.VoteEvent;
+import com.gordonchild.websocket.domain.request.ClearVotingRequest;
 import com.gordonchild.websocket.domain.request.JoinRoomRequest;
 import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
 import com.gordonchild.websocket.domain.request.RevealVoteRequest;
 import com.gordonchild.websocket.domain.request.RoomRequest;
 import com.gordonchild.websocket.domain.request.SendMessageRequest;
+import com.gordonchild.websocket.domain.request.UserAwayRequest;
 import com.gordonchild.websocket.domain.request.UserTypingRequest;
 import com.gordonchild.websocket.domain.request.UserVoteRequest;
 import com.gordonchild.websocket.domain.server.RoomInfo;
@@ -69,6 +70,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             UserData userData = new UserData();
             userData.setUsername(userSession.getUsername());
             userData.setPublicId(userSession.getPublicId());
+            if(userSession.isVoteHidden() && !UserVoteRequest.VoteType.CLEAR.equals(userSession.getCurrentVote())) {
+                userData.setVote(UserVoteRequest.VoteType.HIDDEN);
+            } else {
+                userData.setVote(userSession.getCurrentVote());
+            }
             users.add(userData);
         });
         joinEvent.setAllUsers(users);
@@ -89,6 +95,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
+    public void userAway(UserAwayRequest userAwayRequest) {
+
+    }
+
+    @Override
     public void userTyping(UserTypingRequest request) {
         ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
         TypingEvent typingEvent = this.createChatEvent(session, TypingEvent.class);
@@ -100,11 +111,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
         VoteEvent voteEvent = this.createChatEvent(session, VoteEvent.class);
 
-        if(CLEAR.equals(request.getVote())) {
-            session.setCurrentVote(null);
-            voteEvent.setDidClear(true);
+        session.setCurrentVote(request.getVote());
+        if(session.isVoteHidden() && !UserVoteRequest.VoteType.CLEAR.equals(session.getCurrentVote())) {
+            voteEvent.setVote(UserVoteRequest.VoteType.HIDDEN);
         } else {
-            session.setCurrentVote(request.getVote());
+            voteEvent.setVote(request.getVote());
         }
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), voteEvent);
     }
@@ -121,9 +132,23 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             vote.setUsername(userSession.getUsername());
             vote.setPublicId(userSession.getPublicId());
             vote.setVote(userSession.getCurrentVote());
+            userSession.setVoteHidden(false);
             votes.add(vote);
         });
         event.setVotes(votes);
+
+        this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), event);
+    }
+
+    @Override
+    public void clearVoting(ClearVotingRequest request) {
+        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
+        ClearVotesEvent event = this.createChatEvent(session, ClearVotesEvent.class);
+        RoomInfo roomInfo = this.getRoom(request);
+        roomInfo.getUsers().forEach(userSession->{
+            userSession.setVoteHidden(true);
+            userSession.setCurrentVote(UserVoteRequest.VoteType.CLEAR);
+        });
 
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), event);
     }

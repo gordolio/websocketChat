@@ -2,9 +2,9 @@ package com.gordonchild.websocket.domain.request;
 
 import com.gordonchild.websocket.domain.session.ChatSession;
 
-public class LeaveRoomRequest extends RoomRequest {
+public class UserAwayRequest extends RoomRequest {
 
-    public LeaveRoomRequest(ChatSession chatSession) {
+    public UserAwayRequest(ChatSession chatSession) {
         super(chatSession);
     }
 

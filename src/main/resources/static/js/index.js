@@ -67,8 +67,8 @@ $(function() {
                         });
                     });
                 },
-                onDisconnect:function(event) {
-                    
+                onDisconnect:function() {
+                    me.exitRoom();
                 },
                 onTyping:function(event) {
                     me.createTypingTimeout(event);
@@ -89,7 +89,7 @@ $(function() {
                                     .attr("id","userId"+user.publicId)
                                     .addClass("userLine")
                                     .append($("<span class='username'>"+user.username+"</span>"))
-                                    .append($("<span class='glyph'></span>"))
+                                    .append($("<span class='vote'></span>").addClass(user.vote))
                             );
                         }
                     });
@@ -99,32 +99,30 @@ $(function() {
                     me.announce(leaveMessage.username, " has left");
                 },
                 onVote:function(vote) {
-                    if(vote.didClear) {
-                        $("#userId" + vote.publicId)
-                            .find(".glyph")
-                            .removeClass()
-                            .addClass("glyph");
+                    if(vote.vote === 'CLEAR') {
                         me.announce(vote.username, " has un-voted.");
                     } else {
-                        $("#userId" + vote.publicId)
-                            .find(".glyph")
-                            .removeClass()
-                            .addClass("glyph glyphicon glyphicon-ok-sign voted");
                         me.announce(vote.username, " has voted.");
                     }
+                    $("#userId" + vote.publicId)
+                        .find(".vote")
+                        .removeClass()
+                        .addClass(vote.vote + " vote");
                 },
                 onReveal:function(votes) {
                     me.announce(votes.username, " revealed the votes.");
                     $.each(votes.votes,function(idx,val){
-                        var glyphSpan = $("#userId" + val.publicId)
-                            .find(".glyph")
-                            .removeClass();
-                        if(val.vote === 'QUESTION') {
-                            glyphSpan.addClass("glyph glyphicon glyphicon-question-sign");
-                        } else {
-                            glyphSpan.addClass(val.vote + " glyph");
-                        }
+                        $("#userId" + val.publicId)
+                            .find(".vote")
+                            .removeClass()
+                            .addClass(val.vote + " vote");
                     });
+                    $("#revealButton").find("button").text("Clear");
+                },
+                onClear:function(event){
+                    me.announce(event.username, " cleared the votes.");
+                    $("#chatUsers").find(".vote").removeClass().addClass("CLEAR vote");
+                    $("#revealButton").find("button").text("Reveal");
                 }
             });
             chatController.joinRoom(username,room);
@@ -140,6 +138,9 @@ $(function() {
             this.typingFeedbackDiv.before(messageElem);
             $(".nano").nanoScroller().nanoScroller({ scroll: 'bottom' });
         },
+        exitRoom:function(){
+            
+        },
         sendTheMessage:function(){
             var sendInput = $("#sendMessage");
             chatController.sendMessage(sendInput.val());
@@ -150,11 +151,16 @@ $(function() {
         }
     };
 
-    $("div.clearVote > button,div.vote > button").click(function(){
+    $("div.clearVote > button,div.vote-btn-group > button").click(function(){
         chatController.vote($(this).attr('data-vote'));
     });
     $("#revealButton").click(function(){
-        chatController.reveal();
+        var button = $(this).find("button");
+        if(button.text() === 'Reveal') {
+            chatController.reveal();
+        } else {
+            chatController.clear();
+        }
     });
 
     $("#sendButton").click(function() {

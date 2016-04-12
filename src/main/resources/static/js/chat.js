@@ -4,6 +4,7 @@ var chatController = {
     sessionId:null,
     username:null,
     roomName:null,
+    reconnectCount:0,
     typingSetTimeout:null,
     typingTimeoutHit:false,
     onConnect:function(){},
@@ -14,6 +15,17 @@ var chatController = {
     onTyping:function(){},
     onVote:function(){},
     onReveal:function(){},
+    onClear:function(){},
+    clearController:function(){
+        this.stompClient = null;
+        this.userId = null;
+        this.sessionId = null;
+        this.username = null;
+        this.roomName = null;
+        this.reconnectCount = 0;
+        this.typingSetTimeout = null;
+        this.typingTimeoutHit = false;
+    },
     options:{},
     init:function(opt) {
         this.options = opt;
@@ -25,6 +37,7 @@ var chatController = {
         this.overrideOrDefault("onTyping");
         this.overrideOrDefault("onVote");
         this.overrideOrDefault("onReveal");
+        this.overrideOrDefault("onClear");
     },
     overrideOrDefault:function(name) {
         if(typeof this.options[name] === 'function') {
@@ -33,9 +46,9 @@ var chatController = {
     },
     setConnected: function (connected) {
         if(connected) {
-            this.onConnect.call(this);
+            this.onConnect();
         } else {
-            this.onDisconnect.call(this);
+            this.onDisconnect();
         }
     },
     joinRoom:function(user,room) {
@@ -65,6 +78,7 @@ var chatController = {
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect({}, function () {
             me.setConnected(true);
+            me.reconnectCount = 0;
             me.stompClient.subscribe('/topic/chats-'+me.roomName, function (message) {
                 var chatMessage = JSON.parse(message.body);
                 me.showEvent(chatMessage);
@@ -77,13 +91,23 @@ var chatController = {
                 "roomName":me.roomName,
                 "username":me.username
             }));
+        },function(){
+            me.attemptReconnect();
         });
     },
-    disconnect: function () {
-        if (this.stompClient != null) {
-            this.stompClient.disconnect();
-            this.stompClient = null;
+    attemptReconnect:function(){
+        if(this.reconnectCount++ >= 5) {
+            this.disconnect();
         }
+        this.connect();
+    },
+    disconnect: function () {
+            if (this.stompClient != null) {
+                try {
+                    this.stompClient.disconnect();
+                } catch(ex) {}
+                this.stompClient = null;
+            }
         this.setConnected(false);
     },
     sendMessage: function (message) {
@@ -113,6 +137,13 @@ var chatController = {
         };
         this.stompClient.send("/chatApp/revealVotes", {}, JSON.stringify(data));
     },
+    clear:function() {
+        var data = {
+            "sessionId":this.sessionId,
+            "roomName":this.roomName
+        };
+        this.stompClient.send("/chatApp/clearVoting", {}, JSON.stringify(data));
+    },
     typing:function() {
         var me = this;
         if(me.typingSetTimeout == null) {
@@ -137,6 +168,8 @@ var chatController = {
             this.onVote(event);
         } else if(event.type === 'RevealVotesEvent') {
             this.onReveal(event);
+        } else if(event.type === 'ClearVotesEvent') {
+            this.onClear(event);
         } else {
             this.onMessage(event);
         }
