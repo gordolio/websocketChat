@@ -100,6 +100,7 @@ public class SessionServiceImpl implements SessionService {
         this.socketSessionMap.put(socketSessionId, baseSession);
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends Session> T makeSessionContext(final Session existingSession, Class<T> clazz) {
         ProxyFactory factory = new ProxyFactory();
         factory.setSuperclass(clazz);
@@ -109,7 +110,15 @@ public class SessionServiceImpl implements SessionService {
         try {
             return (T) factory.create(new Class<?>[]{}, new Object[]{}, handler);
         } catch(ReflectiveOperationException ex) {
-            throw new RuntimeException("Error creating proxy", ex);
+            throw new SessionProxyException("Error creating proxy", ex);
         }
+    }
+
+    private class SessionProxyException extends RuntimeException {
+
+        private SessionProxyException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
     }
 }

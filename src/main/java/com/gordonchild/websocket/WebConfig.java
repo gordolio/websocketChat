@@ -1,19 +1,13 @@
 package com.gordonchild.websocket;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -50,6 +44,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
         super.addDefaultHttpMessageConverters(converters);
     }
 
+    /*
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         try {
@@ -66,4 +61,5 @@ public class WebConfig extends WebMvcConfigurationSupport {
             LOG.error("Error mapping resources", ex);
         }
     }
+    */
 }
