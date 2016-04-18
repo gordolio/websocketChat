@@ -1,14 +1,22 @@
 package com.gordonchild.websocket;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.templateresolver.TemplateResolver;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -38,13 +46,21 @@ public class WebConfig extends WebMvcConfigurationSupport {
         return jsonConverter;
     }
 
+    @Bean
+    public TemplateResolver templateResolver() {
+        ServletContextTemplateResolver resolver = new ServletContextTemplateResolver();
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML5");
+        return resolver;
+    }
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(this.customJackson2HttpMessageConverter());
         super.addDefaultHttpMessageConverters(converters);
     }
 
-    /*
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         try {
@@ -61,5 +77,4 @@ public class WebConfig extends WebMvcConfigurationSupport {
             LOG.error("Error mapping resources", ex);
         }
     }
-    */
 }

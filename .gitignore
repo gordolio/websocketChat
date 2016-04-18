@@ -3,6 +3,8 @@ build
 .idea
 *.iml
 
+node_modules
+
 # Elastic Beanstalk Files
 .ebextensions
 deploy.sh
