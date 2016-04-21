@@ -1,0 +1,11 @@
+/css/**                   |classpath:/css/
+/image/**                 |classpath:/image/
+/js/**                    |classpath:/js/
+/vendor/**                |classpath:/vendor/
+/android-chrome**.png     |classpath:/
+/apple-touch-icon**.png   |classpath:/
+/favicon**                |classpath:/
+/browserconfig.xml        |classpath:/
+/mstile**.png             |classpath:/
+/manifest.json            |classpath:/
+/safari-pinned-tab.svg    |classpath:/

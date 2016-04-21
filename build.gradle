@@ -8,12 +8,57 @@ buildscript {
        classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
    }
 }
+
+plugins {
+    id 'com.github.ksoichiro.web.resource' version '1.7.0'
+
+}
 apply plugin: 'propdeps'
 apply plugin: 'propdeps-idea'
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
 
+webResource {
+    base {
+        dest='src/main/resources'
+    }
+    lib {
+        dest = 'vendor'
+    }
+    bower {
+        dependencies {
+            install name: 'jquery', version: '2.2.3',
+                    filter: ['dist/jquery.min.js', 'dist/jquery.min.map']
+            install name: 'bootstrap', version: '3.3.6',
+                    filter: ['dist/css/*.min.css', 'dist/js/*.min.js', 'dist/fonts/*']
+            install name: 'sockjs-client', version: '1.0.3', filter: ['dist/sockjs.min.js']
+            install name: 'stomp-websocket', version: '2.3.3', filter: ['lib/stomp.min.js']
+            install name: 'nanoscroller', version: '0.8.7',
+                    filter: ['bin/javascripts/jquery.nanoscroller.min.js',
+                     'bin/images/*',
+                     'bin/css/nanoscroller.css']
+            install name: 'html5shiv', version: '3.7.2', filter: ['dist/html5shiv.min.js']
+            install name: 'respond', version: '1.4.2', filter: ['dest/respond.min.js']
+        }
+    }
+    less {
+        // Set false if you don't use LESS related features
+        enabled = false
+        // Change LESS src/dest directories and filter setting
+        src = 'less'
+        dest = 'css'
+        // Default: ['**/*.less']
+        include = ['app.less']
+        // Default: ['**/_*.less']
+        exclude = ['**/_*.less']
+        // Default: true
+        minify = false
+        // Default: true
+        parallelize = true
+    }
+
+}
 
 war {
     baseName = appName

@@ -4,6 +4,7 @@ build
 *.iml
 
 node_modules
+src/main/resources/vendor
 
 # Elastic Beanstalk Files
 .ebextensions
