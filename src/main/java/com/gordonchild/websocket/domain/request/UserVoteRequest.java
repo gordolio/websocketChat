@@ -3,7 +3,7 @@ package com.gordonchild.websocket.domain.request;
 public class UserVoteRequest extends RoomRequest {
 
     public enum VoteType {
-        CLEAR, HIDDEN, QUESTION, BREAK, ZERO, HALF, ONE, TWO, THREE, FIVE, EIGHT, THIRTEEN, TWENTY_ONE
+        UNVOTE, HIDDEN, QUESTION, BREAK, ZERO, HALF, ONE, TWO, THREE, FIVE, EIGHT, THIRTEEN, TWENTY_ONE
     }
 
     private VoteType vote;

@@ -70,7 +70,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             UserData userData = new UserData();
             userData.setUsername(userSession.getUsername());
             userData.setPublicId(userSession.getPublicId());
-            if(userSession.isVoteHidden() && !UserVoteRequest.VoteType.CLEAR.equals(userSession.getCurrentVote())) {
+            if(userSession.isVoteHidden() && !UserVoteRequest.VoteType.UNVOTE.equals(userSession.getCurrentVote())) {
                 userData.setVote(UserVoteRequest.VoteType.HIDDEN);
             } else {
                 userData.setVote(userSession.getCurrentVote());
@@ -112,7 +112,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         VoteEvent voteEvent = this.createChatEvent(session, VoteEvent.class);
 
         session.setCurrentVote(request.getVote());
-        if(session.isVoteHidden() && !UserVoteRequest.VoteType.CLEAR.equals(session.getCurrentVote())) {
+        if(session.isVoteHidden() && !UserVoteRequest.VoteType.UNVOTE.equals(session.getCurrentVote())) {
             voteEvent.setVote(UserVoteRequest.VoteType.HIDDEN);
         } else {
             voteEvent.setVote(request.getVote());
@@ -147,7 +147,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         RoomInfo roomInfo = this.getRoom(request);
         roomInfo.getUsers().forEach(userSession->{
             userSession.setVoteHidden(true);
-            userSession.setCurrentVote(UserVoteRequest.VoteType.CLEAR);
+            userSession.setCurrentVote(UserVoteRequest.VoteType.UNVOTE);
         });
 
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), event);

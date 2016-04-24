@@ -99,7 +99,7 @@ $(function() {
                     me.announce(leaveMessage.username, " has left");
                 },
                 onVote:function(vote) {
-                    if(vote.vote === 'CLEAR') {
+                    if(vote.vote === 'UNVOTE') {
                         me.announce(vote.username, " has un-voted.");
                     } else {
                         me.announce(vote.username, " has voted.");
@@ -121,7 +121,8 @@ $(function() {
                 },
                 onClear:function(event){
                     me.announce(event.username, " cleared the votes.");
-                    $("#chatUsers").find(".vote").removeClass().addClass("CLEAR vote");
+                    $("div.vote-btn-group > button").addClass("btn-default").removeClass("btn-primary");
+                    $("#chatUsers").find(".vote").removeClass().addClass("UNVOTE vote");
                     $("#revealButton").find("button").text("Reveal");
                 }
             });
@@ -150,9 +151,13 @@ $(function() {
             chatController.typing();
         }
     };
-
-    $("div.clearVote > button,div.vote-btn-group > button").click(function(){
+    $("div.unVote > button,div.vote-btn-group > button").click(function(){
+        $("div.vote-btn-group > button").addClass("btn-default").removeClass("btn-primary");
         chatController.vote($(this).attr('data-vote'));
+    });
+    $("div.vote-btn-group > button").click(function() {
+        $("div.vote-btn-group > button").addClass("btn-default").removeClass("btn-primary");
+        $(this).addClass("btn-primary").removeClass("btn-default");
     });
     $("#revealButton").click(function(){
         var button = $(this).find("button");

@@ -6,7 +6,7 @@ public abstract class ChatSession implements Session {
 
     private String username;
     private String roomName;
-    private UserVoteRequest.VoteType currentVote = UserVoteRequest.VoteType.CLEAR;
+    private UserVoteRequest.VoteType currentVote = UserVoteRequest.VoteType.UNVOTE;
     private boolean voteHidden = true;
 
     public String getUsername() {

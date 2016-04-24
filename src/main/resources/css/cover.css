@@ -113,7 +113,7 @@ div#chatWrapper > footer button {
 .vote-btn-group.btn-group {
     margin-top:10px;
 }
-.clearVote {
+.unVote {
     margin-top:10px;
 }
 .btn.glyphicon {
@@ -129,39 +129,39 @@ button img {
     width:15px;
     margin-top:-4px;
 }
-.vote.HIDDEN::before,.vote.QUESTION::before {
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.vote.HIDDEN::before,
+.vote.QUESTION::before,
+.vote.BREAK::before
+{
+    display:inline-block;
+    font:normal normal normal 14px/1 FontAwesome;
+    font-size:inherit;
+    text-rendering:auto;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    position:relative;
+    top:1px;
+    font-style:normal;
+    font-weight:400;
     margin-top:2px;
 }
-.vote.CLEAR::before {
+.vote.UNVOTE::before {
     content:'';
 }
 .vote.HIDDEN::before{
-    content:'\e084';
+    content:'\f058';
 }
 .vote.QUESTION::before {
-    content:'\e085';
+    content:'\f059';
 }
-.vote.BREAK {
-    background: url("/image/glyphicons-halflings-278-coffee-cup@3x.png") no-repeat;
-    background-size: 15px;
-    margin-top:4px;
-    height:15px;
-    width:15px;
+.vote.BREAK::before {
+    content:'\f0f4';
 }
 .vote.ZERO::before{
     content:'0';
 }
 .vote.HALF::before{
-    content:'½';
+    content:'\00bd';
 }
 .vote.ONE::before{
     content:'1';
@@ -342,4 +342,8 @@ Others
     .cover-container {
         width: 700px;
     }
+}
+
+div#roomName {
+    float:left;
 }
