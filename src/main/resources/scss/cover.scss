@@ -1,0 +1,266 @@
+
+
+/**
+  html globals
+**/
+html{
+  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+  box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+  background-color: #333;
+}
+
+html,
+body {
+  padding:0;
+  margin:0;
+}
+body {
+  background-color:rgba(0,0,0,0);
+  color: #333;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.25);
+  overflow:hidden;
+}
+
+
+
+/*
+Signin
+*/
+
+.signin input {
+  border:1px solid #333;
+}
+div.loginBlock {
+  max-width:300px;
+  height:350px;
+}
+
+/*
+Chat
+*/
+
+div.chatBlock {
+  max-width:900px;
+  height:550px;
+}
+
+
+
+div#chatArea{
+  height:100%;
+  width:100%;
+}
+div#chatUsersWrapper.changes{
+  width: 38%;
+  float:right;
+}
+div#chatUsers > div {
+  padding:7px 10px 7px 10px;
+  border-bottom:1px solid #999;
+}
+div#chatContent,div#chatUsers{
+  height:100%;
+  text-align:left;
+  padding:0;
+}
+div#chatContentWrapper,div#chatUsersWrapper{
+  height:100%;
+  width:60%;
+  position:relative;
+  float:left;
+  background-color:#eee;
+  border-radius:5px;
+  border:1px solid #999;
+  box-shadow:inset 0 0 5px rgba(0,0,0,.5);
+}
+div#chatWrapper footer {
+  padding-top:10px;
+  padding-bottom:10px;
+  margin-bottom:-70px;
+  height:70px;
+}
+div#chatWrapper > footer input {
+  height:40px;
+  font-family:Helvetica, Arial, sans-serif;
+  width:100%;
+}
+div#chatWrapper > footer button {
+  height:40px;
+}
+
+.chatLine,.userLine{
+  margin-bottom:0;
+  padding:5px 10px 5px 10px;
+  -ms-word-wrap:break-word;
+  word-wrap:break-word;
+  border-bottom:1px solid #bbb;
+}
+#typingFeedback{
+  padding:5px 20px 5px 20px;
+  font-style:italic;
+  font-size:10pt;
+  color:#777;
+}
+
+@media (max-width:10000px) {
+  div#chatWrapper{
+    height:100%;
+    padding:40px 0 100px 0;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+  }
+  html,body {
+    min-height: 100%;
+  }
+  div#chatWrapper > header {
+    text-align:left;
+    margin-top:-40px;
+    min-height:40px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:20px;
+    padding-top:5px;
+    padding-bottom:10px;
+    padding-left:10px;
+  }
+  .cover-container {
+    margin:50px auto 50px auto;
+    height:100%;
+    padding-top:10px;
+    padding-bottom:100px;
+  }
+  div#mainBlock {
+    background-color: #acacac;
+    padding: 10px;
+    border: 1px #fff solid;
+    border-radius: 10px;
+    /*height:100%;*/
+  }
+  div#chatWrapper > footer input,div#chatWrapper > footer button {
+    height:40px;
+  }
+}
+@media (max-width:600px) {
+
+  html,body{
+    height:100%;
+  }
+  div#chatWrapper > header {
+    text-align:left;
+    margin-top:-40px;
+    min-height:30px;
+    font-family:Helvetica, Arial, sans-serif;
+    font-size:16px;
+    padding-top:0;
+    padding-bottom:0;
+    padding-left:5px;
+  }
+  div#chatWrapper{
+    height:100%;
+    padding-bottom:78px;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+  }
+  .cover-container {
+    padding-top:0;
+    margin:0 auto 0 auto;
+    padding-bottom:0;
+  }
+  div#mainBlock {
+    background-color: #acacac;
+    padding: 5px;
+    border: 1px #fff solid;
+    border-radius: 0;
+    height:100%;
+  }
+  div#mainBlock.loginBlock{
+    height:330px;
+  }
+  .btn.btn-default,.btn.btn-primary {
+    padding:2px 7px;
+  }
+  div#chatWrapper > footer input,div#chatWrapper > footer button {
+    height:30px;
+  }
+  div#mainBlock > div > footer {
+    position:absolute;
+    bottom:8px;
+    width:97%;
+    height:initial;
+    margin-bottom:0;
+  }
+}
+@media (max-width:427px) {
+  div#chatWrapper {
+    padding-bottom:117px;
+  }
+}
+@media(max-width:300px) {
+  div#chatWrapper {
+    padding-bottom:148px;
+  }
+}
+
+/*
+Others
+*/
+
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+
+
+/*
+ * Cover
+ */
+
+.cover {
+  padding: 0 20px;
+}
+.cover .btn-lg {
+  padding: 10px 20px;
+  font-weight: bold;
+  border:1px solid #999;
+}
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 768px) {
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+  /* Handle the widths */
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+}
+
+@media (min-width: 992px) {
+  .cover-container {
+    width: 700px;
+  }
+}
+
+div#roomName {
+  float:left;
+}

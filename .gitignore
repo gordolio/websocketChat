@@ -5,6 +5,7 @@ build
 
 node_modules
 src/main/resources/vendor
+src/main/resources/dist
 
 # Elastic Beanstalk Files
 .ebextensions

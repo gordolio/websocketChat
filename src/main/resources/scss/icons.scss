@@ -1,0 +1,79 @@
+@import "../vendor/font-awesome/scss/variables";
+$fa-font-path:"/vendor/font-awesome/fonts";
+@import "../vendor/font-awesome/scss/path";
+@import "../vendor/font-awesome/scss/mixins";
+
+.vote-icon::before {
+  @include fa-icon;
+  position:relative;
+  top:1px;
+  /*font-weight:400;*/
+  margin-top:2px;
+}
+
+.vote.HIDDEN::before{
+  @extend .vote-icon::before;
+  content:'\f058';
+}
+
+.vote.QUESTION::before {
+  @extend .vote-icon::before;
+  content:'\f059';
+}
+.btn-question::before {
+  @include fa-icon;
+  content: '\f059';
+}
+
+.vote.BREAK::before {
+  @extend .vote-icon::before;
+  content:'\f0f4';
+}
+.btn-break::before {
+  @include fa-icon;
+  content:'\f0f4';
+}
+
+.vote.UNVOTE::before {
+  content:'';
+}
+.vote.ZERO::before{
+  content:'0';
+}
+.vote.HALF::before{
+  content:'\00bd';
+}
+.vote.ONE::before{
+  content:'1';
+}
+.vote.TWO::before{
+  content:'2';
+}
+.vote.THREE::before{
+  content:'3';
+}
+.vote.FIVE::before{
+  content:'5';
+}
+.vote.EIGHT::before{
+  content:'8';
+}
+.vote.THIRTEEN::before{
+  content:'13';
+}
+.vote.TWENTY_ONE::before{
+  content:'21';
+}
+
+.reveal {
+  margin-top:10px;
+}
+.vote {
+  float:right;
+}
+.vote-btn-group.btn-group {
+  margin-top:10px;
+}
+.unVote {
+  margin-top:10px;
+}

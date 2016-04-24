@@ -1,6 +1,7 @@
 /css/**                   |classpath:/css/
 /image/**                 |classpath:/image/
 /js/**                    |classpath:/js/
+/dist/**                  |classpath:/dist/
 /vendor/**                |classpath:/vendor/
 /android-chrome**.png     |classpath:/
 /apple-touch-icon**.png   |classpath:/

@@ -26,11 +26,6 @@
     <meta name="msapplication-TileImage" content="/mstile-144x144.png"/>
     <meta name="theme-color" content="#ffffff"/>
 
-    <!-- Vendor Styles -->
-    <link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/vendor/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet"/>
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
-    <link href="/vendor/nanoscroller/bin/css/nanoscroller.css" rel="stylesheet"/>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -40,9 +35,7 @@
 
     <!-- End Vendor Styles -->
 
-    <link href="/css/animations.css" rel="stylesheet"/>
-    <link href="/css/cover.css" rel="stylesheet"/>
-    <link href="/css/timer.css" rel="stylesheet"/>
+    <link href="/dist/css/main.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="site-wrapper">
@@ -73,14 +66,14 @@
                     </header>
                     <div id="chatArea">
                         <div id="chatContentWrapper">
-                            <div class="nano nanoChanges chat-content">
+                            <div class="nano">
                                 <div id="chatContent" class="nano-content">
                                     <div id="typingFeedback" style="display:none;"></div>
                                 </div>
                             </div>
                         </div>
                         <div id="chatUsersWrapper" class="changes">
-                            <div class="nano nanoChanges  chat-users">
+                            <div class="nano">
                                 <div id="chatUsers" class="nano-content"></div>
                             </div>
                         </div>
@@ -93,7 +86,7 @@
                             </span>
                         </div>
                         <div class="vote-btn-group btn-group" role="group" aria-label="" data-toggle="buttons">
-                            <button type="button" data-vote="QUESTION" class="btn btn-default fa fa-question-circle"></button>
+                            <button type="button" data-vote="QUESTION" class="btn btn-default btn-question"></button>
                             <button type="button" data-vote="ZERO" class="btn btn-default">0</button>
                             <button type="button" data-vote="HALF" class="btn btn-default">&frac12;</button>
                             <button type="button" data-vote="ONE" class="btn btn-default">1</button>
@@ -103,7 +96,7 @@
                             <button type="button" data-vote="EIGHT" class="btn btn-default">8</button>
                             <button type="button" data-vote="THIRTEEN" class="btn btn-default">13</button>
                             <button type="button" data-vote="TWENTY_ONE" class="btn btn-default">21</button>
-                            <button type="button" data-vote="BREAK" class="btn btn-default fa fa-coffee">
+                            <button type="button" data-vote="BREAK" class="btn btn-default btn-break">
                             </button>
                         </div>
                         <div class="unVote btn-group" role="group" aria-label="">
@@ -124,7 +117,7 @@
 
 <!-- Vendor Scripts -->
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
 <script src="/vendor/sockjs-client/dist/sockjs.min.js"></script>
 <script src="/vendor/stomp-websocket/lib/stomp.min.js"></script>
 <script src="/vendor/nanoscroller/bin/javascripts/jquery.nanoscroller.min.js"></script>

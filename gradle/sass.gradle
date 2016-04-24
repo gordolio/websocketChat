@@ -1,0 +1,6 @@
+
+task sassCompile(type: Exec) {
+    commandLine 'sassc', "$projectDir/src/main/resources/scss/main.scss", "$projectDir/src/main/resources/dist/css/main.css"
+}
+
+
