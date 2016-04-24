@@ -262,7 +262,7 @@ button img {
     div#mainBlock.loginBlock{
         height:330px;
     }
-    .btn.btn-default {
+    .btn.btn-default,.btn.btn-primary {
         padding:2px 7px;
     }
     div#chatWrapper > footer input,div#chatWrapper > footer button {
@@ -344,6 +344,8 @@ Others
     }
 }
 
+/*
 div#roomName {
     float:left;
 }
+*/
