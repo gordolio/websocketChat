@@ -3,4 +3,8 @@ task sassCompile(type: Exec) {
     commandLine 'sassc', "$projectDir/src/main/resources/scss/main.scss", "$projectDir/src/main/resources/dist/css/main.css"
 }
 
+task sassCompileMin(type: Exec) {
+    commandLine 'sassc', '--style', 'compressed', "$projectDir/src/main/resources/scss/main.scss", "$projectDir/src/main/resources/dist/css/main.min.css"
+}
+
 

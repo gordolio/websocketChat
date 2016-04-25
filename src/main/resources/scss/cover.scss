@@ -45,8 +45,6 @@ div.chatBlock {
   height:550px;
 }
 
-
-
 div#chatArea{
   height:100%;
   width:100%;
@@ -103,27 +101,39 @@ div#chatWrapper > footer button {
   color:#777;
 }
 
+@mixin chatWrapperHeaderBase() {
+  font-family:Helvetica, Arial, sans-serif;
+  text-align:left;
+  margin-top:-40px;
+}
+
+@mixin chatWrapperBase() {
+  height:100%;
+}
+
+@mixin mainBlockBase() {
+  background-color: #acacac;
+}
+
 @media (max-width:10000px) {
+  html,body {
+    min-height: 100%;
+  }
+  div#chatWrapper > header {
+    @include chatWrapperHeaderBase;
+    min-height:40px;
+    font-size:20px;
+    padding-top:5px;
+    padding-bottom:10px;
+    padding-left:10px;
+  }
   div#chatWrapper{
-    height:100%;
+    @include chatWrapperBase;
     padding:40px 0 100px 0;
     top:0;
     bottom:0;
     left:0;
     right:0;
-  }
-  html,body {
-    min-height: 100%;
-  }
-  div#chatWrapper > header {
-    text-align:left;
-    margin-top:-40px;
-    min-height:40px;
-    font-family:Helvetica, Arial, sans-serif;
-    font-size:20px;
-    padding-top:5px;
-    padding-bottom:10px;
-    padding-left:10px;
   }
   .cover-container {
     margin:50px auto 50px auto;
@@ -132,33 +142,31 @@ div#chatWrapper > footer button {
     padding-bottom:100px;
   }
   div#mainBlock {
-    background-color: #acacac;
+    @include mainBlockBase;
     padding: 10px;
     border: 1px #fff solid;
     border-radius: 10px;
-    /*height:100%;*/
   }
-  div#chatWrapper > footer input,div#chatWrapper > footer button {
+  div#chatWrapper > footer input,
+  div#chatWrapper > footer button {
     height:40px;
   }
 }
-@media (max-width:600px) {
 
+@media (max-width:600px) {
   html,body{
     height:100%;
   }
   div#chatWrapper > header {
-    text-align:left;
-    margin-top:-40px;
+    @include chatWrapperHeaderBase;
     min-height:30px;
-    font-family:Helvetica, Arial, sans-serif;
     font-size:16px;
     padding-top:0;
     padding-bottom:0;
     padding-left:5px;
   }
   div#chatWrapper{
-    height:100%;
+    @include chatWrapperBase;
     padding-bottom:78px;
     top:0;
     bottom:0;
@@ -171,11 +179,11 @@ div#chatWrapper > footer button {
     padding-bottom:0;
   }
   div#mainBlock {
-    background-color: #acacac;
+    @include mainBlockBase;
+    height:100%;
     padding: 5px;
     border: 1px #fff solid;
     border-radius: 0;
-    height:100%;
   }
   div#mainBlock.loginBlock{
     height:330px;
@@ -183,7 +191,8 @@ div#chatWrapper > footer button {
   .btn.btn-default,.btn.btn-primary {
     padding:2px 7px;
   }
-  div#chatWrapper > footer input,div#chatWrapper > footer button {
+  div#chatWrapper > footer input,
+  div#chatWrapper > footer button {
     height:30px;
   }
   div#mainBlock > div > footer {
