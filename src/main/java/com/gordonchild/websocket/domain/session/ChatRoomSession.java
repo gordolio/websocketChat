@@ -2,10 +2,9 @@ package com.gordonchild.websocket.domain.session;
 
 import com.gordonchild.websocket.domain.request.UserVoteRequest;
 
-public abstract class ChatSession implements Session {
+public abstract class ChatRoomSession extends RoomSession {
 
     private String username;
-    private String roomName;
     private UserVoteRequest.VoteType currentVote = UserVoteRequest.VoteType.UNVOTE;
     private boolean voteHidden = true;
 
@@ -15,14 +14,6 @@ public abstract class ChatSession implements Session {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getRoomName() {
-        return this.roomName;
-    }
-
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
     }
 
     public UserVoteRequest.VoteType getCurrentVote() {

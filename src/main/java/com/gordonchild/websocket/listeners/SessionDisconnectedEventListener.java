@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
-import com.gordonchild.websocket.domain.session.ChatSession;
+import com.gordonchild.websocket.domain.session.ChatRoomSession;
 import com.gordonchild.websocket.service.ChatRoomService;
 
 @Component
@@ -22,7 +22,7 @@ public class SessionDisconnectedEventListener implements ApplicationListener<Ses
 
     @Override
     public void onApplicationEvent(SessionDisconnectEvent event) {
-        final ChatSession session = this.chatRoomService.getSocketSession(event.getSessionId());
+        final ChatRoomSession session = this.chatRoomService.getSocketSession(event.getSessionId());
         this.chatRoomService.userLeave(new LeaveRoomRequest(session));
         /*
         this.chatRoomService.userAway(new UserAwayRequest(session));

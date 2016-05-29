@@ -1,6 +1,6 @@
 package com.gordonchild.websocket.domain.request;
 
-import com.gordonchild.websocket.domain.session.ChatSession;
+import com.gordonchild.websocket.domain.session.ChatRoomSession;
 
 public class RoomRequest {
 
@@ -8,9 +8,9 @@ public class RoomRequest {
   private String roomName;
 
   public RoomRequest(){}
-  public RoomRequest(ChatSession chatSession) {
-    this.sessionId = chatSession.getSessionId();
-    this.roomName = chatSession.getRoomName();
+  public RoomRequest(ChatRoomSession chatRoomSession) {
+    this.sessionId = chatRoomSession.getSessionId();
+    this.roomName = chatRoomSession.getRoomName();
   }
 
   public String getSessionId() {

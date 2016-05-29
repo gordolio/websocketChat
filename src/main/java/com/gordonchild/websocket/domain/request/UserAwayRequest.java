@@ -1,11 +1,11 @@
 package com.gordonchild.websocket.domain.request;
 
-import com.gordonchild.websocket.domain.session.ChatSession;
+import com.gordonchild.websocket.domain.session.ChatRoomSession;
 
 public class UserAwayRequest extends RoomRequest {
 
-    public UserAwayRequest(ChatSession chatSession) {
-        super(chatSession);
+    public UserAwayRequest(ChatRoomSession chatRoomSession) {
+        super(chatRoomSession);
     }
 
 }

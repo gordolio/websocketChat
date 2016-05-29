@@ -8,7 +8,7 @@ import com.gordonchild.websocket.domain.request.SendMessageRequest;
 import com.gordonchild.websocket.domain.request.UserAwayRequest;
 import com.gordonchild.websocket.domain.request.UserTypingRequest;
 import com.gordonchild.websocket.domain.request.UserVoteRequest;
-import com.gordonchild.websocket.domain.session.ChatSession;
+import com.gordonchild.websocket.domain.session.ChatRoomSession;
 
 public interface ChatRoomService {
 
@@ -21,5 +21,5 @@ public interface ChatRoomService {
     void revealVotes(RevealVoteRequest request);
     void clearVoting(ClearVotingRequest request);
 
-    ChatSession getSocketSession(String sessionId);
+    ChatRoomSession getSocketSession(String sessionId);
 }

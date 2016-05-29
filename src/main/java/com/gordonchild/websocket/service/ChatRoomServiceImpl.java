@@ -29,8 +29,8 @@ import com.gordonchild.websocket.domain.request.SendMessageRequest;
 import com.gordonchild.websocket.domain.request.UserAwayRequest;
 import com.gordonchild.websocket.domain.request.UserTypingRequest;
 import com.gordonchild.websocket.domain.request.UserVoteRequest;
-import com.gordonchild.websocket.domain.server.RoomInfo;
-import com.gordonchild.websocket.domain.session.ChatSession;
+import com.gordonchild.websocket.domain.server.ChatRoomInfo;
+import com.gordonchild.websocket.domain.session.ChatRoomSession;
 
 @Service("chatRoomService")
 public class ChatRoomServiceImpl implements ChatRoomService {
@@ -39,7 +39,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     private static final String CHAT_TOPIC = "/topic/chats-";
 
-    private Map<String,RoomInfo> rooms = new ConcurrentHashMap<>();
+    private Map<String,ChatRoomInfo> rooms = new ConcurrentHashMap<>();
 
     @Autowired
     private SessionService sessionService;
@@ -49,7 +49,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public void sendMessage(SendMessageRequest request) {
-        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
+        ChatRoomSession session = this.sessionService.getSession(request.getSessionId(), ChatRoomSession.class);
         MessageEvent chatMessage = this.createChatEvent(session, MessageEvent.class);
         chatMessage.setMessage(request.getMessage());
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), chatMessage);
@@ -57,14 +57,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public void userJoin(JoinRoomRequest request) {
-        ChatSession chatSession = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
-        chatSession.setUsername(request.getUsername());
+        ChatRoomSession chatRoomSession = this.sessionService.getSession(request.getSessionId(), ChatRoomSession.class);
+        chatRoomSession.setUsername(request.getUsername());
 
-        RoomInfo roomInfo = this.getRoom(request);
-        roomInfo.addUser(chatSession);
+        ChatRoomInfo roomInfo = this.getRoom(request);
+        roomInfo.addUser(chatRoomSession);
 
-        chatSession.setRoomName(request.getRoomName());
-        JoinEvent joinEvent = this.createChatEvent(chatSession, JoinEvent.class);
+        chatRoomSession.setRoomName(request.getRoomName());
+        JoinEvent joinEvent = this.createChatEvent(chatRoomSession, JoinEvent.class);
         List<UserData> users = new ArrayList<>();
         roomInfo.getUsers().forEach(userSession->{
             UserData userData = new UserData();
@@ -83,8 +83,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public void userLeave(LeaveRoomRequest request) {
-        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
-        RoomInfo roomInfo = this.getRoom(request);
+        ChatRoomSession session = this.sessionService.getSession(request.getSessionId(), ChatRoomSession.class);
+        ChatRoomInfo roomInfo = this.getRoom(request);
         roomInfo.removeUser(session);
         if(roomInfo.getUsers().isEmpty()) {
             this.rooms.remove(roomInfo.getRoomName());
@@ -101,14 +101,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public void userTyping(UserTypingRequest request) {
-        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
+        ChatRoomSession session = this.sessionService.getSession(request.getSessionId(), ChatRoomSession.class);
         TypingEvent typingEvent = this.createChatEvent(session, TypingEvent.class);
         this.simpMessagingTemplate.convertAndSend(CHAT_TOPIC + request.getRoomName(), typingEvent);
     }
 
     @Override
     public void userVote(UserVoteRequest request) {
-        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
+        ChatRoomSession session = this.sessionService.getSession(request.getSessionId(), ChatRoomSession.class);
         VoteEvent voteEvent = this.createChatEvent(session, VoteEvent.class);
 
         session.setCurrentVote(request.getVote());
@@ -122,9 +122,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public void revealVotes(RevealVoteRequest request) {
-        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
+        ChatRoomSession session = this.sessionService.getSession(request.getSessionId(), ChatRoomSession.class);
         RevealVotesEvent event = this.createChatEvent(session, RevealVotesEvent.class);
-        RoomInfo roomInfo = this.getRoom(request);
+        ChatRoomInfo roomInfo = this.getRoom(request);
 
         List<UserVoteData> votes = new ArrayList<>();
         roomInfo.getUsers().forEach(userSession->{
@@ -142,9 +142,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     public void clearVoting(ClearVotingRequest request) {
-        ChatSession session = this.sessionService.getSession(request.getSessionId(), ChatSession.class);
+        ChatRoomSession session = this.sessionService.getSession(request.getSessionId(), ChatRoomSession.class);
         ClearVotesEvent event = this.createChatEvent(session, ClearVotesEvent.class);
-        RoomInfo roomInfo = this.getRoom(request);
+        ChatRoomInfo roomInfo = this.getRoom(request);
         roomInfo.getUsers().forEach(userSession->{
             userSession.setVoteHidden(true);
             userSession.setCurrentVote(UserVoteRequest.VoteType.UNVOTE);
@@ -154,29 +154,29 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public ChatSession getSocketSession(String socketSessionId) {
-        return this.sessionService.getSocketSession(socketSessionId, ChatSession.class);
+    public ChatRoomSession getSocketSession(String socketSessionId) {
+        return this.sessionService.getSocketSession(socketSessionId, ChatRoomSession.class);
     }
 
-    private RoomInfo getRoom(RoomRequest room) {
+    private ChatRoomInfo getRoom(RoomRequest room) {
         return this.getRoom(room.getRoomName());
     }
-    private RoomInfo getRoom(String roomName) {
-        RoomInfo roomInfo = this.rooms.get(roomName);
+    private ChatRoomInfo getRoom(String roomName) {
+        ChatRoomInfo roomInfo = this.rooms.get(roomName);
 
         if(roomInfo == null) {
-            roomInfo = new RoomInfo(roomName);
+            roomInfo = new ChatRoomInfo(roomName);
             this.rooms.put(roomName, roomInfo);
         }
         return roomInfo;
     }
 
-    private <T extends UserData> T createChatEvent(ChatSession chatSession, Class<T> clazz) {
+    private <T extends UserData> T createChatEvent(ChatRoomSession chatRoomSession, Class<T> clazz) {
         T obj = null;
         try {
             obj = clazz.newInstance();
-            obj.setUsername(chatSession.getUsername());
-            obj.setPublicId(chatSession.getPublicId());
+            obj.setUsername(chatRoomSession.getUsername());
+            obj.setPublicId(chatRoomSession.getPublicId());
         } catch(ReflectiveOperationException ex) {
             LOG.error("error instantiating chat event", ex);
         }
