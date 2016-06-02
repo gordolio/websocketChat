@@ -15,4 +15,9 @@ This is a chat client made using websockets. The backend is using springboot wit
 
 Battleship functionality is currently being worked on.
 
+#### Running
 
+./gradlew run     # *nix
+gradlew.bat run   # windows
+
+navigate your webbrowser to http://localhost:8081/

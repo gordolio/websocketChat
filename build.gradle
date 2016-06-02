@@ -18,6 +18,9 @@ apply plugin: 'propdeps-idea'
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
+apply plugin: 'application'
+
+mainClassName = 'com.gordonchild.websocket.WebsocketsTest'
 
 webResource {
     base {
