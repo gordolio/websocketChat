@@ -76,7 +76,7 @@ $(function() {
                 onMessage:function(chatMessage){
                     me.clearPossibleTimeout(chatMessage);
                     me.appendMessage(
-                        $("<p/>").text("<b>"+ chatMessage.username "</b>: " + chatMessage.message)
+                        $("<p/>").text("<b>"+ chatMessage.username + "</b>: " + chatMessage.message)
                             .addClass("chatLine")
                     );
                 },
