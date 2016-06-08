@@ -9,6 +9,10 @@ buildscript {
    }
 }
 
+plugins {
+    id 'com.github.ksoichiro.web.resource' version '1.7.0'
+}
+
 
 apply plugin: 'propdeps'
 apply plugin: 'propdeps-idea'
@@ -19,9 +23,6 @@ apply plugin: 'application'
 
 mainClassName = 'com.gordonchild.websocket.WebsocketsTest'
 
-plugins {
-    id 'com.github.ksoichiro.web.resource' version '1.7.0'
-}
 
 apply from: 'gradle/bower.gradle'
 apply from: 'gradle/sass.gradle'
