@@ -1,67 +1,33 @@
-
+@import 'login';
 
 .animated {
-  animation-duration: 0.4s;
+  animation-duration: 2.0s;
   animation-fill-mode: both;
 }
 
-@-webkit-keyframes shake {
-  from, to {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-
-  10%, 30%, 50%, 70%, 90% {
-    -webkit-transform: translate3d(-10px, 0, 0);
-    transform: translate3d(-10px, 0, 0);
-  }
-
-  20%, 40%, 60%, 80% {
-    -webkit-transform: translate3d(10px, 0, 0);
-    transform: translate3d(10px, 0, 0);
-  }
-}
-
-@keyframes shake {
-  from, to {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-
-  10%, 30%, 50%, 70%, 90% {
-    -webkit-transform: translate3d(-2px, 0, 0);
-    transform: translate3d(-2px, 0, 0);
-  }
-
-  20%, 40%, 60%, 80% {
-    -webkit-transform: translate3d(2px, 0, 0);
-    transform: translate3d(2px, 0, 0);
-  }
-}
-
-.shake {
-  -webkit-animation-name: shake;
-  animation-name: shake;
-}
+$login-width:300px;
+$login-height:350px;
+$chat-width:900px;
+$chat-height:500px;
 
 @keyframes growMainArea {
   from {
-    max-width:300px;
-    height:350px;
+    max-width:$login-width;
+    height:$login-height;
   }
   to {
-    max-width:900px;
-    height:500px;
+    max-width:$chat-width;
+    height:$chat-height;
   }
 }
 @-webkit-keyframes growMainArea {
   from {
-    max-width:300px;
-    height:350px;
+    max-width:$login-width;
+    height:$login-height;
   }
   to {
-    max-width:900px;
-    height:500px;
+    max-width:$chat-width;
+    height:$chat-height;
   }
 }
 
