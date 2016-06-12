@@ -21,6 +21,7 @@ var utils = {};
                 }
                 $(this).removeClass('animated ' + animationName);
             });
+            return this;
         }
     });
 })();

@@ -1,80 +1,54 @@
 @import 'login';
 
 .animated {
-  animation-duration: 2.0s;
+  animation-duration: 1.0s;
   animation-fill-mode: both;
 }
 
-$login-width:300px;
-$login-height:350px;
-$chat-width:900px;
-$chat-height:500px;
+$keyframeNames:('@keyframes','@-webkit-keyframes');
+$size-map:(
+   regular:(
+      media-max-width:10000px,
+      login-width:300px,
+      login-height:350px,
+      chat-width:768px,
+      chat-height:550px
+   ),
+   small:(
+      media-max-width:600px,
+      login-width:300px,
+      login-height:330px,
+      chat-width:'',
+      chat-height:100%
+   )
+);
 
-@keyframes growMainArea {
-  from {
-    max-width:$login-width;
-    height:$login-height;
+@each $name,$value in $size-map {
+  @keyframes growMainArea-#{$name}{
+    from {
+      max-width:map-get($value,'login-width');
+      height:map-get($value,'login-height');
+    }
+    to {
+      max-width:map-get($value,'chat-width');
+      height:map-get($value,'chat-height');
+    }
   }
-  to {
-    max-width:$chat-width;
-    height:$chat-height;
+  @media(max-width:map-get($value,'media-max-width')) {
+    .growMainArea {
+      animation-name:growMainArea-#{$name};
+    }
   }
-}
-@-webkit-keyframes growMainArea {
-  from {
-    max-width:$login-width;
-    height:$login-height;
-  }
-  to {
-    max-width:$chat-width;
-    height:$chat-height;
-  }
-}
-
-.growMainArea {
-  -webkit-animation-name:growMainArea;
-  animation-name:growMainArea;
 }
 
 @keyframes showArea {
-  from {
-    opacity:0.0;
-  }
-  to {
-    opacity:1.0;
-  }
+  from {opacity:0.0;}
+  to {opacity:1.0;}
 }
-@-webkit-keyframes showArea {
-  from{
-    opacity:0.0;
-  }
-  to {
-    opacity:1.0;
-  }
-}
-
-.showArea {
-  -webkit-animation-name:showArea;
-  animation-name:showArea;
-}
+.showArea {animation-name:showArea;}
 
 @keyframes hideArea {
-  from {
-    opacity:1.0;
-  }
-  to {
-    opacity:0.0;
-  }
+  from {opacity:1.0;}
+  to {opacity:0.0;}
 }
-@-webkit-keyframes hideArea {
-  from{
-    opacity:1.0;
-  }
-  to {
-    opacity:0.0;
-  }
-}
-.hideArea {
-  -webkit-animation-name:hideArea;
-  animation-name:hideArea;
-}
+.hideArea {animation-name:hideArea;}

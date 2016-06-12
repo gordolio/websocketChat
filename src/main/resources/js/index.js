@@ -52,10 +52,10 @@ $(function() {
             chatController.init({
                 onConnect:function(){
                     $("#roomName").html(room);
-                    $("#loginArea").animateCss("hideArea",function(){
+                    $("#loginArea").removeClass("loginBlock").animateCss("hideArea",function(){
                         $(this).css("display","none");
                         $("#mainBlock").animateCss("growMainArea",function() {
-                            $(this).removeClass("loginBlock").addClass("chatBlock");
+                            $(this).addClass("chatBlock");
                             $("#chatWrapper")
                                 .css("display", "block")
                                 .animateCss("showArea",function () {

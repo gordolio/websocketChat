@@ -1,15 +1,22 @@
 
-task sassCompile(type: Exec) {
+def resourcesDir = "$projectDir/src/main/resources"
+task mkDistDirs << {
+    File distCss = new File("$resourcesDir/dist/css")
+    if(!distCss.exists()) {
+        distCss.mkdirs()
+    }
+}
+task sassCompile(type: Exec, dependsOn:['mkDistDirs']) {
     commandLine 'sassc',
-            "$projectDir/src/main/resources/scss/main.scss",
-            "$projectDir/src/main/resources/dist/css/main.css"
+            "$resourcesDir/scss/main.scss",
+            "$resourcesDir/dist/css/main.css"
 }
 
-task sassCompileMin(type: Exec) {
+task sassCompileMin(type: Exec, dependsOn:['mkDistDirs']) {
     commandLine 'sassc',
             '--style', 'compressed',
-            "$projectDir/src/main/resources/scss/main.scss",
-            "$projectDir/src/main/resources/dist/css/main.min.css"
+            "$resourcesDir/scss/main.scss",
+            "$resourcesDir/dist/css/main.min.css"
 }
 
 
