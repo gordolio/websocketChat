@@ -1,6 +1,8 @@
 # Websocket Chat
 ###### Experiments with websockets
 
+![Build Status](https://api.travis-ci.org/gordolio/websocketChat.svg)
+
 This is a chat client made using websockets. The backend is using springboot with spring-messaging. The frontend is using sockjs + stomp.
 
 #### Features
