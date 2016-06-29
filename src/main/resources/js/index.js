@@ -80,6 +80,13 @@ $(function() {
                             .append($("<span/>").text(": " + chatMessage.message))
                             .addClass("chatLine")
                     );
+                    if(window.Notification && Notification.permission !== "denied"){
+                        Notification.requestPermission(function(status){
+                           var n = new Notification(chatMessage.username, {
+                                body: chatMessage.message                
+                           });
+                        });
+                    }
                 },
                 onJoin:function(joinMessage){
                     me.announce(joinMessage.username, " has joined");
@@ -213,3 +220,4 @@ $(function() {
         $("#room").val(room);
     }
 });
+
