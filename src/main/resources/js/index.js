@@ -169,10 +169,10 @@ $(function() {
                 Notification.requestPermission(function (permission) {
                     // If the user accepts, let's create a notification
                     if (permission === "granted") {
-                        new Notification(user,{
+                        me.notifications.push(new Notification(user,{
                             body:body,
                             icon:"/android-chrome-192x192.png"
-                        });
+                        }));
                     }
                 });
             }
@@ -199,10 +199,13 @@ $(function() {
         controller.focused = true;
         clearTimeout(controller.titleTimeout);
         document.title = "Hello WebSocket";
-        $.each(controller.notifications,function(idx,n) {
-            n.close();
+        for(var idx=0;idx<controller.notifications.length;idx++) {
+            var n = controller.notifications[idx];
+            if(n) {
+                n.close();
+            }
             delete controller.notifications[idx];
-        });
+        }
     });
 
     $(window).blur(function() {
