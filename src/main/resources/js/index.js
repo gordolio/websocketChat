@@ -4,6 +4,7 @@ $(function() {
         chatUsersDiv:$("#chatUsers"),
         typingFeedbackDiv:$("#typingFeedback"),
         usersTypingTimeouts:{},
+        notifications:[],
         typingTimeout:function(event) {
             delete this.usersTypingTimeouts[event.publicId];
             this.renderTypingDiv();
@@ -80,13 +81,7 @@ $(function() {
                             .append($("<span/>").text(": " + chatMessage.message))
                             .addClass("chatLine")
                     );
-                    if(window.Notification && Notification.permission !== "denied"){
-                        Notification.requestPermission(function(status){
-                           var n = new Notification(chatMessage.username, {
-                                body: chatMessage.message                
-                           });
-                        });
-                    }
+                    me.notify(chatMessage.username, chatMessage.message);
                 },
                 onJoin:function(joinMessage){
                     me.announce(joinMessage.username, " has joined");
@@ -143,6 +138,45 @@ $(function() {
                 ).append($("<span/>").text(announcement))
                 .addClass("chatLine"));
         },
+        notify:function(user, body) {
+            var me = this;
+            if(user === chatController.username
+                || this.focused) {
+                return;
+            }
+            if(me.titleTimeout) {
+                clearTimeout(me.titleTimeout);
+                delete me['titleTimeout'];
+            }
+            var titleMessage = user + " said...";
+            var timeoutFunc = function() {
+                if(document.title === titleMessage) {
+                    document.title = "Hello WebSocket";
+                } else {
+                    document.title = titleMessage;
+                }
+                me.titleTimeout = setTimeout(timeoutFunc,2000);
+            };
+            timeoutFunc();
+            if (!("Notification" in window)) {
+                // not supported
+            } else if(Notification.permission === "granted") {
+                me.notifications.push(new Notification(user, {
+                    body:body,
+                    icon:"/android-chrome-192x192.png"
+                }));
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission(function (permission) {
+                    // If the user accepts, let's create a notification
+                    if (permission === "granted") {
+                        new Notification(user,{
+                            body:body,
+                            icon:"/android-chrome-192x192.png"
+                        });
+                    }
+                });
+            }
+        },
         appendMessage:function(messageElem){
             this.typingFeedbackDiv.before(messageElem);
             $(".nano").nanoScroller().nanoScroller({ scroll: 'bottom' });
@@ -159,6 +193,21 @@ $(function() {
             chatController.typing();
         }
     };
+
+    controller.focused = true;
+    $(window).focus(function() {
+        controller.focused = true;
+        clearTimeout(controller.titleTimeout);
+        document.title = "Hello WebSocket";
+        $.each(controller.notifications,function(idx,n) {
+            n.close();
+            delete controller.notifications[idx];
+        });
+    });
+
+    $(window).blur(function() {
+        controller.focused = false;
+    });
     $("div.unVote > button,div.vote-btn-group > button").click(function(){
         $("div.vote-btn-group > button").addClass("btn-default").removeClass("btn-primary");
         chatController.vote($(this).attr('data-vote'));
