@@ -31,10 +31,6 @@ Signin
 .signin input {
   border:1px solid #333;
 }
-div.loginBlock {
-  max-width:300px;
-  height:350px;
-}
 
 /*
 Chat
@@ -115,6 +111,25 @@ div#chatWrapper > footer button {
   background-color: #acacac;
 }
 
+div#loginArea {
+  height:100%;
+  > div.loginHeading {
+    height:25%;
+  }
+  > div.loginFields {
+    height:75%;
+    >div.loginFieldsHead{
+      height:5%;
+    }
+    >div.loginFieldsContent{
+      height:80%;
+    }
+    >div.loginFieldsFoot {
+      height:10%;
+    }
+  }
+}
+
 @media (max-width:10000px) {
   html,body {
     min-height: 100%;
@@ -146,6 +161,10 @@ div#chatWrapper > footer button {
     padding: 10px;
     border: 1px #fff solid;
     border-radius: 10px;
+  }
+  div.loginBlock {
+    max-width: 300px;
+    height: 350px;
   }
   div#chatWrapper > footer input,
   div#chatWrapper > footer button {
@@ -180,13 +199,22 @@ div#chatWrapper > footer button {
   }
   div#mainBlock {
     @include mainBlockBase;
-    height:100%;
     padding: 5px;
     border: 1px #fff solid;
     border-radius: 0;
   }
-  div#mainBlock.loginBlock{
-    height:330px;
+  div.loginBlock{
+    width:70%;
+    min-height:330px;
+    height:60%;
+  }
+  div.chatBlock{
+    height:100%;
+  }
+  div.loginFields {
+    max-width:190px;
+    margin-left:auto;
+    margin-right:auto;
   }
   .btn.btn-default,.btn.btn-primary {
     padding:2px 7px;

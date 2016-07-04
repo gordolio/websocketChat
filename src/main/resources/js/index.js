@@ -53,10 +53,12 @@ $(function() {
             chatController.init({
                 onConnect:function(){
                     $("#roomName").html(room);
-                    $("#loginArea").removeClass("loginBlock").animateCss("hideArea",function(){
+                    $("#loginArea").animateCss("hideArea",function(){
                         $(this).css("display","none");
-                        $("#mainBlock").animateCss("growMainArea",function() {
-                            $(this).addClass("chatBlock");
+                        var mainBlock = $("#mainBlock");
+                        mainBlock.addClass("growMainArea").removeClass("loginBlock");
+                        setTimeout(function() {
+                            mainBlock.addClass("chatBlock");
                             $("#chatWrapper")
                                 .css("display", "block")
                                 .animateCss("showArea",function () {
@@ -65,7 +67,7 @@ $(function() {
                                         alwaysVisible: true
                                     });
                                 });
-                        });
+                        },500);
                     });
                 },
                 onDisconnect:function() {

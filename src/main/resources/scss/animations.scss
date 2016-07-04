@@ -1,8 +1,7 @@
 @import 'login';
 
 .animated {
-  animation-duration: 1.0s;
-  animation-fill-mode: both;
+  animation-duration: 0.5s;
 }
 
 $keyframeNames:('@keyframes','@-webkit-keyframes');
@@ -16,27 +15,31 @@ $size-map:(
    ),
    small:(
       media-max-width:600px,
-      login-width:300px,
-      login-height:330px,
-      chat-width:'',
-      chat-height:100%
+      login-width:70%,
+      login-height:60%,
+      chat-width:100%,
+      chat-height:100%,
    )
 );
 
 @each $name,$value in $size-map {
   @keyframes growMainArea-#{$name}{
     from {
-      max-width:map-get($value,'login-width');
+      width:map-get($value,'login-width');
       height:map-get($value,'login-height');
     }
     to {
-      max-width:map-get($value,'chat-width');
+      width:map-get($value,'chat-width');
       height:map-get($value,'chat-height');
     }
   }
   @media(max-width:map-get($value,'media-max-width')) {
-    .growMainArea {
+    div#mainBlock.growMainArea {
       animation-name:growMainArea-#{$name};
+      animation-fill-mode: forwards;
+      animation-iteration-count: 1;
+      animation-direction: normal;
+      animation-duration: 0.5s;
     }
   }
 }
