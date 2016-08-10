@@ -8,9 +8,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
-import com.gordonchild.websocket.domain.session.ChatRoomSession;
-import com.gordonchild.websocket.service.ChatRoomService;
+import com.gordonchild.websocket.chat.domain.request.LeaveRoomRequest;
+import com.gordonchild.websocket.chat.domain.session.ChatRoomSession;
+import com.gordonchild.websocket.chat.service.ChatRoomService;
 
 @Component
 public class SessionDisconnectedEventListener implements ApplicationListener<SessionDisconnectEvent> {
