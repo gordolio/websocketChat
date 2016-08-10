@@ -1,4 +1,4 @@
-package com.gordonchild.websocket.domain.battleship;
+package com.gordonchild.websocket.battleship.domain;
 
 import java.util.ArrayList;
 import java.util.List;

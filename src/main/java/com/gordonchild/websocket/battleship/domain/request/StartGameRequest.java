@@ -1,4 +1,4 @@
-package com.gordonchild.websocket.domain.battleship.request;
+package com.gordonchild.websocket.battleship.domain.request;
 
 public class StartGameRequest extends GameRequest {
 

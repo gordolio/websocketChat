@@ -1,21 +1,21 @@
-package com.gordonchild.websocket.service;
+package com.gordonchild.websocket.battleship.service;
 
-import static com.gordonchild.websocket.domain.battleship.Game.Player;
-import static com.gordonchild.websocket.domain.battleship.PositionStatus.EMPTY;
+import static com.gordonchild.websocket.battleship.domain.Game.Player;
+import static com.gordonchild.websocket.battleship.domain.PositionStatus.EMPTY;
 
 import org.springframework.stereotype.Service;
 
-import com.gordonchild.websocket.domain.battleship.Board;
-import com.gordonchild.websocket.domain.battleship.FireResult;
-import com.gordonchild.websocket.domain.battleship.Game;
-import com.gordonchild.websocket.domain.battleship.Position;
-import com.gordonchild.websocket.domain.battleship.PositionStatus;
-import com.gordonchild.websocket.domain.battleship.Ship;
-import com.gordonchild.websocket.domain.battleship.ShipPosition;
-import com.gordonchild.websocket.exception.PositionNotEmptyException;
+import com.gordonchild.websocket.battleship.domain.Board;
+import com.gordonchild.websocket.battleship.domain.FireResult;
+import com.gordonchild.websocket.battleship.domain.Game;
+import com.gordonchild.websocket.battleship.domain.Position;
+import com.gordonchild.websocket.battleship.domain.PositionStatus;
+import com.gordonchild.websocket.battleship.domain.Ship;
+import com.gordonchild.websocket.battleship.domain.ShipPosition;
+import com.gordonchild.websocket.battleship.exception.PositionNotEmptyException;
 
 @Service("battleshipService")
-public class BattleshipServiceImpl implements BattleshipService {
+public class BattleshipService {
 
     @FunctionalInterface
     private interface PositionAction {
@@ -28,7 +28,6 @@ public class BattleshipServiceImpl implements BattleshipService {
     }
 
 
-    @Override
     public void placeShip(final Game game, Player player, ShipPosition shipPosition) {
         Board board;
         if(Player.ONE.equals(player)) {
@@ -74,7 +73,6 @@ public class BattleshipServiceImpl implements BattleshipService {
         }
     }
 
-    @Override
     public FireResult fireAtPosition(final Game game, Player player, Position position) {
         Board board;
         if(Player.ONE.equals(player)) {
