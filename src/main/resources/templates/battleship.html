@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Battleship</title>
+
+    <link href="/dist/css/bootstrap-full.css" rel="stylesheet"/>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Battleship</h1>
+    <input type="text" id="playerName" class="form-control" placeholder="Player Name"/><br/>
+    <input type="text" id="gameId" class="form-control" placeholder="Game ID"/><br/>
+    <button id="newGame">New Game</button>&nbsp;&nbsp;<button id="joinGame">Join</button>
+    <div id="status">Waiting to connect</div>
+
+</div>
+
+<script src="/vendor/jquery/dist/jquery.min.js"></script>
+<script src="/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
+<script src="/vendor/sockjs-client/dist/sockjs.min.js"></script>
+<script src="/vendor/stomp-websocket/lib/stomp.min.js"></script>
+<script src="/js/battleship.js"></script>
+<script src="/js/battleshipPage.js"></script>
+</body>
+</html>

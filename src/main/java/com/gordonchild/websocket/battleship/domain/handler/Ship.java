@@ -1,4 +1,4 @@
-package com.gordonchild.websocket.battleship.domain;
+package com.gordonchild.websocket.battleship.domain.handler;
 
 public enum Ship {
     AIRCRAFT_CARRIER(5, "Aircraft Carrier"),

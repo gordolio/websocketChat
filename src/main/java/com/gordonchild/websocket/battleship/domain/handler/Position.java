@@ -1,11 +1,11 @@
-package com.gordonchild.websocket.battleship.exception;
+package com.gordonchild.websocket.battleship.domain.handler;
 
-public class PositionNotEmptyException extends RuntimeException {
+public class Position {
 
     private int x;
     private int y;
 
-    public PositionNotEmptyException(int x, int y) {
+    public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }

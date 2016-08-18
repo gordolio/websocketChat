@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+    <mapping>
+        <class-a>com.gordonchild.websocket.battleship.domain.handler.Game</class-a>
+        <class-b>com.gordonchild.websocket.battleship.domain.event.NewGameEvent</class-b>
+        <field>
+            <a>gameId</a>
+            <b>gameId</b>
+        </field>
+    </mapping>
+    <mapping>
+        <class-a>com.gordonchild.websocket.battleship.domain.handler.Game</class-a>
+        <class-b>com.gordonchild.websocket.battleship.domain.event.BeginGameEvent</class-b>
+        <field>
+            <a>gameId</a>
+            <b>gameId</b>
+        </field>
+        <field>
+            <a>playerOneName</a>
+            <b>playerOneName</b>
+        </field>
+        <field>
+            <a>playerTwoName</a>
+            <b>playerTwoName</b>
+        </field>
+    </mapping>
+</mappings>

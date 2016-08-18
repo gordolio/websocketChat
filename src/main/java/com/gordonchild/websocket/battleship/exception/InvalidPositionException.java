@@ -1,11 +1,11 @@
-package com.gordonchild.websocket.battleship.domain;
+package com.gordonchild.websocket.battleship.exception;
 
-public class Position {
+public class InvalidPositionException extends RuntimeException {
 
     private int x;
     private int y;
 
-    public Position(int x, int y) {
+    public InvalidPositionException(int x, int y) {
         this.x = x;
         this.y = y;
     }

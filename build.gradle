@@ -58,6 +58,8 @@ dependencies {
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.7.1'
     compile 'com.fasterxml.jackson.core:jackson-core:2.7.1'
     compile 'joda-time:joda-time:2.9.2'
+    compile 'net.sf.dozer:dozer:5.5.1'
+    compile 'ch.qos.logback:logback-classic:1.1.7'
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 

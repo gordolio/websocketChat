@@ -65,7 +65,7 @@ var chatController = {
     },
     leaveRoom:function() {
         if(this.stompClient !== null) {
-            this.stompClient.send("/chatApp/userLeave", {}, JSON.stringify({
+            this.stompClient.send("/app/userLeave", {}, JSON.stringify({
                 sessionId: this.sessionId,
                 roomName: this.roomName
             }));
@@ -74,7 +74,7 @@ var chatController = {
     },
     connect: function () {
         var me = this;
-        var socket = new SockJS('/chat');
+        var socket = new SockJS('/stomp');
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect({}, function () {
             me.setConnected(true);
@@ -83,10 +83,10 @@ var chatController = {
                 var chatMessage = JSON.parse(message.body);
                 me.showEvent(chatMessage);
             });
-            me.stompClient.send("/chatApp/socketConnect",{},JSON.stringify({
+            me.stompClient.send("/app/socketConnect",{},JSON.stringify({
                 "sessionId":me.sessionId
             }));
-            me.stompClient.send("/chatApp/joinRoom",{},JSON.stringify({
+            me.stompClient.send("/app/joinRoom",{},JSON.stringify({
                 "sessionId":me.sessionId,
                 "roomName":me.roomName,
                 "username":me.username
@@ -116,7 +116,7 @@ var chatController = {
             "roomName":this.roomName,
             "message":message
         };
-        this.stompClient.send("/chatApp/sendMessage", {}, JSON.stringify(data));
+        this.stompClient.send("/app/sendMessage", {}, JSON.stringify(data));
         if(this.typingSetTimeout !== null) {
             clearTimeout(this.typingSetTimeout);
             this.typingSetTimeout = null;
@@ -128,21 +128,21 @@ var chatController = {
             "roomName":this.roomName,
             "vote":vote
         };
-        this.stompClient.send("/chatApp/userVote", {}, JSON.stringify(data));
+        this.stompClient.send("/app/userVote", {}, JSON.stringify(data));
     },
     reveal:function() {
         var data = {
             "sessionId":this.sessionId,
             "roomName":this.roomName
         };
-        this.stompClient.send("/chatApp/revealVotes", {}, JSON.stringify(data));
+        this.stompClient.send("/app/revealVotes", {}, JSON.stringify(data));
     },
     clear:function() {
         var data = {
             "sessionId":this.sessionId,
             "roomName":this.roomName
         };
-        this.stompClient.send("/chatApp/clearVoting", {}, JSON.stringify(data));
+        this.stompClient.send("/app/clearVoting", {}, JSON.stringify(data));
     },
     typing:function() {
         var me = this;
@@ -151,7 +151,7 @@ var chatController = {
                 "sessionId":me.sessionId,
                 "roomName":me.roomName
             };
-            me.stompClient.send("/chatApp/userTyping", {}, JSON.stringify(data));
+            me.stompClient.send("/app/userTyping", {}, JSON.stringify(data));
             me.typingSetTimeout = setTimeout(function() {
                 me.typingSetTimeout = null;
             },4000);

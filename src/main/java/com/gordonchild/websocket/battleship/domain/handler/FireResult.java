@@ -1,4 +1,4 @@
-package com.gordonchild.websocket.battleship.domain;
+package com.gordonchild.websocket.battleship.domain.handler;
 
 public class FireResult {
 

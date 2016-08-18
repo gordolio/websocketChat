@@ -1,4 +1,7 @@
-package com.gordonchild.websocket.battleship.domain;
+package com.gordonchild.websocket.battleship.domain.handler;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gordonchild.websocket.battleship.utils.PositionHelper;
 
 public class ShipPosition {
 
@@ -17,11 +20,12 @@ public class ShipPosition {
     }
 
     private Ship ship;
-    private int position;
+    @JsonIgnore
+    private int startPosition;
     private Direction direction;
     private Boolean sunk;
     private Boolean[] hits;
-    private int numberOfHits;
+    private Integer numberOfHits;
 
     public Ship getShip() {
         return this.ship;
@@ -55,12 +59,12 @@ public class ShipPosition {
         this.hits = hits;
     }
 
-    public int getPosition() {
-        return this.position;
+    public int getStartPosition() {
+        return this.startPosition;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setStartPosition(int startPosition) {
+        this.startPosition = startPosition;
     }
 
     public int getNumberOfHits() {
@@ -69,5 +73,21 @@ public class ShipPosition {
 
     public void setNumberOfHits(int numberOfHits) {
         this.numberOfHits = numberOfHits;
+    }
+
+    public int getX() {
+        return PositionHelper.getX(this.startPosition);
+    }
+
+    public int getY() {
+        return PositionHelper.getY(this.startPosition);
+    }
+
+    public void setX(int x) {
+        this.startPosition = PositionHelper.positionWithX(this.startPosition,x);
+    }
+
+    public void setY(int y) {
+        this.startPosition = PositionHelper.positionWithY(this.startPosition,y);
     }
 }

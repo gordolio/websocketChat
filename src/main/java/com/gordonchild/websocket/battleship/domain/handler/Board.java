@@ -1,13 +1,22 @@
-package com.gordonchild.websocket.battleship.domain;
+package com.gordonchild.websocket.battleship.domain.handler;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
 
-    private List<ShipPosition> shipPositions = new ArrayList<>();
-    private PositionStatus[] positions = new PositionStatus[100];
-    private int sunkShips = 0;
+    private List<ShipPosition> shipPositions;
+    private PositionStatus[] positions;
+    private int sunkShips;
+
+    public Board() {
+        this.positions = new PositionStatus[100];
+        for(int i=0;i<100;i++) {
+            this.positions[i] = new PositionStatus(i, PositionStatus.Status.EMPTY);
+        }
+        this.shipPositions = new ArrayList<>();
+        this.sunkShips = 0;
+    }
 
     public List<ShipPosition> getShipPositions() {
         return this.shipPositions;

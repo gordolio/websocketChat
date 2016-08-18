@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +27,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class WebConfig extends WebMvcConfigurationSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(WebConfig.class);
+
+    @Bean
+    public Mapper mapper() throws IOException {
+        List<String> mappings = new ArrayList<>();
+        mappings.add("gameMappings.xml");
+        DozerBeanMapper mapper = new DozerBeanMapper();
+        for(String mapping : mappings) {
+            InputStream stream = WebConfig.class.getResourceAsStream("/dozer/" + mapping);
+            mapper.addMapping(stream);
+            stream.close();
+        }
+        return mapper;
+    }
 
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
