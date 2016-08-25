@@ -10,6 +10,9 @@ task sassCompile(type: Exec, dependsOn:['mkDistDirs']) {
     commandLine 'sassc',
             "$resourcesDir/scss/main.scss",
             "$resourcesDir/dist/css/main.css"
+    commandLine 'sassc',
+            "$resourcesDir/scss/battleship.scss",
+            "$resourcesDir/dist/css/battleship.css"
 }
 
 task sassCompileMin(type: Exec, dependsOn:['mkDistDirs']) {

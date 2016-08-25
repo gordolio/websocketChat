@@ -1,5 +1,7 @@
 package com.gordonchild.websocket.battleship.controller;
 
+import java.util.Arrays;
+
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.gordonchild.websocket.battleship.domain.event.BeginGameEvent;
 import com.gordonchild.websocket.battleship.domain.event.NewGameEvent;
 import com.gordonchild.websocket.battleship.domain.handler.Game;
+import com.gordonchild.websocket.battleship.domain.handler.Ship;
 import com.gordonchild.websocket.battleship.domain.request.JoinGameRequest;
 import com.gordonchild.websocket.battleship.domain.request.NewGameRequest;
 import com.gordonchild.websocket.battleship.domain.request.PlaceShipRequest;
@@ -50,6 +53,7 @@ public class BattleshipController implements ErrorController {
     public void joinGame(@Payload JoinGameRequest joinGameRequest, @Header(SESSION_ID) String sessionId) {
         Game game = this.gameManagerService.joinGame(joinGameRequest.getPlayerName(), joinGameRequest.getGameId(), sessionId);
         BeginGameEvent event = this.mapper.map(game, BeginGameEvent.class);
+        event.setShips(Arrays.asList(Ship.values()));
 
         this.sendToUser(game.getPlayerOneId(), GAME_EVENTS_QUEUE, event);
         this.sendToUser(game.getPlayerTwoId(), GAME_EVENTS_QUEUE, event);
@@ -81,7 +85,6 @@ public class BattleshipController implements ErrorController {
     private MessageHeaders createHeaders(String sessionId, Class<?> returnType) {
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
         headerAccessor.setSessionId(sessionId);
-        headerAccessor.setHeader(SimpMessagingTemplate.CONVERSION_HINT_HEADER, returnType);
         headerAccessor.setLeaveMutable(true);
         return headerAccessor.getMessageHeaders();
     }

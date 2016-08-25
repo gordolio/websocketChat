@@ -1,0 +1,80 @@
+@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap";
+$fa-font-path:"/vendor/font-awesome/fonts";
+@import "../vendor/font-awesome/scss/font-awesome";
+
+.board-area {
+  position:absolute;
+  .board {
+    float:left;
+    .board-row {
+      clear: both;
+      > div {
+        border: 1px solid #000;
+        background: #ddd;
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+}
+
+@mixin rotate($amount) {
+  -ms-transform: rotate($amount); /* IE 9 */
+  -webkit-transform: rotate($amount); /* Safari */
+  transform: rotate($amount);
+}
+$fill-color:rgb(72,121,214);
+.pieces {
+  float:left;
+  .piece.selected svg > * {
+    fill: $fill-color;
+    stroke: $fill-color;
+  }
+  .north {
+    /*@include rotate(0deg);*/
+  }
+  .east {
+    @include rotate(-90deg);
+  }
+  .south {
+    @include rotate(180deg);
+  }
+  .west {
+    @include rotate(90deg);
+  }
+}
+
+  .controls {
+    $controls-padding:5px;
+    padding-top:$controls-padding;
+    padding-bottom:$controls-padding;
+    > * {
+      @extend .fa;
+      @extend .fa-2x;
+      cursor:pointer;
+      &:before {
+        padding:$controls-padding;
+      }
+    }
+    .left{
+      @extend .fa-arrow-left;
+    }
+    .right{
+      @extend .fa-arrow-right;
+    }
+    .up{
+      @extend .fa-arrow-up;
+    }
+    .down {
+      @extend .fa-arrow-down;
+    }
+    .rotate-left {
+      @extend .fa-rotate-left;
+    }
+    .rotate-right {
+      @extend .fa-rotate-right;
+    }
+    .cancel {
+      @extend .fa-remove;
+    }
+  }

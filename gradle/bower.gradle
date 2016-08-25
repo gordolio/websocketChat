@@ -21,6 +21,7 @@ webResource {
             install name: 'respond', version: '1.4.2', filter: ['dest/respond.min.js']
             install name: 'moment', version: '2.13.0', filter: ['min/moment.min.js']
             install name: 'font-awesome', version: '4.6.1'//, filter: ['css/*', 'fonts/*']
+            install name: 'handlebars', version: '4.0.1'
         }
     }
 }

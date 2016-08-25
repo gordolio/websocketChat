@@ -5,6 +5,7 @@
     <title>Battleship</title>
 
     <link href="/dist/css/bootstrap-full.css" rel="stylesheet"/>
+    <link href="/dist/css/battleship.css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -13,15 +14,62 @@
     <h1>Battleship</h1>
     <input type="text" id="playerName" class="form-control" placeholder="Player Name"/><br/>
     <input type="text" id="gameId" class="form-control" placeholder="Game ID"/><br/>
+    <div id="opponent">Opponent: <span></span></div><br/>
     <button id="newGame">New Game</button>&nbsp;&nbsp;<button id="joinGame">Join</button>
     <div id="status">Waiting to connect</div>
 
+    <div class="controls">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="up"></div>
+        <div class="down"></div>
+        <div class="rotate-left"></div>
+        <div class="rotate-right"></div>
+        <div class="cancel"></div>
+    </div>
+    <div class="board-area">
+        <div class="area">
+            <div id="board1" class="board"></div>
+            <div class="pieces"></div>
+        </div>
+    </div>
 </div>
+
+<script id="board-template" type="text/x-handlebars-template">
+{{#each rows as |row|}}
+    <div class="board-row">
+        {{#each row.cols as |col|}}
+            <div class="pull-left">{{col.val}}</div>
+        {{/each}}
+    </div>
+{{/each}}
+</script>
+
+<script id="ship-template" type="text/x-handlebars-template">
+    {{set 'actualSize' (math size '-' 1)}}
+<div class="piece">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="{{width}}" height="{{height}}"
+     xml:space="preserve">
+    <path stroke="rgb(0, 0, 0)" stroke-width="8" fill="rgb(0, 0, 0)"
+          stroke-linejoin="round" stroke-miterlimit="10"
+          d="{{first.d}}"></path>
+    <rect stroke="rgb(0, 0, 0)" stroke-width="8" fill="rgb(0, 0, 0)"
+          x="{{middle.x}}" y="{{middle.y}}" width="{{middle.width}}"
+          height="{{middle.height}}"
+          rx="4"></rect>
+    <rect stroke="rgb(0, 0, 0)" stroke-width="8" fill="rgb(0, 0, 0)" x="{{last.x}}"
+          y="{{last.y}}"
+          width="{{last.width}}" height="{{last.height}}" rx="9"></rect>
+</svg>
+</div>
+</script>
 
 <script src="/vendor/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
 <script src="/vendor/sockjs-client/dist/sockjs.min.js"></script>
 <script src="/vendor/stomp-websocket/lib/stomp.min.js"></script>
+<script src="/vendor/handlebars/handlebars.min.js"></script>
+<script src="/js/handlebars-handlers.js"></script>
 <script src="/js/battleship.js"></script>
 <script src="/js/battleshipPage.js"></script>
 </body>

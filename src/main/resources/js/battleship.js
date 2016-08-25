@@ -17,6 +17,9 @@ function BattleshipController(callbacks) {
     this.onNewGame=function(event){
         this.gameId = event.gameId;
     };
+    this.onBeginName=function(event) {
+        this.gameId = event.gameId;
+    };
     this.newGame=function(playerName) {
         var me = this;
         this.playerName = playerName;
