@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+    implementation 'org.jetbrains:annotations:23.0.0'
     implementation 'org.javassist:javassist:3.29.0-GA'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -1,6 +1,8 @@
 package com.gordonchild.websocket.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gordonchild.websocket.domain.request.ConnectRequest;
+import com.gordonchild.websocket.domain.session.Session;
+import com.gordonchild.websocket.service.SessionService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -9,15 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gordonchild.websocket.domain.request.ConnectRequest;
-import com.gordonchild.websocket.domain.session.Session;
-import com.gordonchild.websocket.service.SessionService;
-
 @Controller
 public class SessionController {
 
-    @Autowired
-    private SessionService sessionService;
+    private final SessionService sessionService;
+
+    public SessionController(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
 
     @ResponseBody
     @RequestMapping(path="/startSession",method=RequestMethod.GET)
