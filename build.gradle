@@ -1,67 +1,69 @@
-buildscript {
-   repositories {
-       mavenCentral()
-       maven { url 'http://repo.spring.io/plugins-release' }
-   }
-   dependencies {
-       classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.2.RELEASE")
-       classpath("org.springframework.build.gradle:propdeps-plugin:0.0.7")
-   }
-}
+import org.apache.tools.ant.taskdefs.condition.Os
+import sass.embedded_protocol.EmbeddedSass
+
 
 plugins {
-    id 'com.github.ksoichiro.web.resource' version '1.7.0'
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.github.ksoichiro.web.resource' version '1.7.3'
+    id 'java'
+    id "io.freefair.sass-war" version "6.4.3"
 }
 
 
-apply plugin: 'propdeps'
-apply plugin: 'propdeps-idea'
-apply plugin: 'java'
-apply plugin: 'spring-boot'
-apply plugin: 'war'
-apply plugin: 'application'
 
-mainClassName = 'com.gordonchild.websocket.WebsocketsTest'
+//mainClassName = 'com.gordonchild.websocket.WebsocketsTest'
 
 
 apply from: 'gradle/bower.gradle'
 apply from: 'gradle/sass.gradle'
 
-war {
-    baseName = appName
-    version = appVersion
-}
-jar {
-   baseName = appName
-   version = appVersion
+
+version = '0.0.1'
+
+sass {
+    omitSourceMapUrl.set(false)
+    outputStyle = EmbeddedSass.OutputStyle.EXPANDED
+    sourceMapContents = false
+    sourceMapEmbed = false
+    sourceMapEnabled = true
 }
 
-sourceCompatibility = 1.8
-version = '1.0'
-
-configurations {
-    providedRuntime
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+        // TODO: switch back to adoptium when gradle has fixed this.
+        if (Os.isFamily(Os.FAMILY_MAC)) {
+            vendor.set(JvmVendorSpec.BELLSOFT)
+        } else {
+            vendor.set(JvmVendorSpec.ADOPTIUM)
+        }
+    }
+    withJavadocJar()
+    withSourcesJar()
 }
+
 
 repositories {
    mavenCentral()
 }
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    compile 'org.springframework.boot:spring-boot-starter-test'
-    compile 'org.springframework.boot:spring-boot-starter-websocket'
-    compile 'org.springframework:spring-messaging'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.7.1'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.7.1'
-    compile 'joda-time:joda-time:2.9.2'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework:spring-messaging'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.13.3'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+    implementation 'org.javassist:javassist:3.29.0-GA'
 
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-
-    testCompile 'junit:junit'
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'junit:junit'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
 }
 
+tasks.named('test') {
+	useJUnitPlatform()
+}

@@ -1,12 +1,5 @@
 package com.gordonchild.websocket.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ErrorController;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.gordonchild.websocket.domain.request.ClearVotingRequest;
 import com.gordonchild.websocket.domain.request.JoinRoomRequest;
 import com.gordonchild.websocket.domain.request.LeaveRoomRequest;
@@ -15,14 +8,22 @@ import com.gordonchild.websocket.domain.request.SendMessageRequest;
 import com.gordonchild.websocket.domain.request.UserTypingRequest;
 import com.gordonchild.websocket.domain.request.UserVoteRequest;
 import com.gordonchild.websocket.service.ChatRoomService;
+import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ChatController implements ErrorController {
 
     private static final String ERROR_PATH = "/error";
 
-    @Autowired
-    private ChatRoomService chatRoomService;
+    private final ChatRoomService chatRoomService;
+
+    public ChatController(ChatRoomService chatRoomService) {
+        this.chatRoomService = chatRoomService;
+    }
 
     @RequestMapping("/")
     public String home() {
@@ -69,7 +70,7 @@ public class ChatController implements ErrorController {
         this.chatRoomService.clearVoting(request);
     }
 
-    @Override
+    //@Override
     public String getErrorPath() {
         return ERROR_PATH;
     }

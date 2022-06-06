@@ -1,24 +1,22 @@
 package com.gordonchild.websocket.service;
 
+import com.gordonchild.websocket.domain.session.BaseSessionInternal;
+import com.gordonchild.websocket.domain.session.Session;
+import com.gordonchild.websocket.exception.SessionNotFoundException;
+import javassist.util.proxy.MethodHandler;
+import javassist.util.proxy.ProxyFactory;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
+
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.stereotype.Service;
-import org.thymeleaf.util.StringUtils;
-
-import com.gordonchild.websocket.domain.session.BaseSessionInternal;
-import com.gordonchild.websocket.domain.session.Session;
-import com.gordonchild.websocket.exception.SessionNotFoundException;
-
-import javassist.util.proxy.MethodHandler;
-import javassist.util.proxy.ProxyFactory;
-
 @Service("sessionService")
 public class SessionServiceImpl implements SessionService {
 
-    private Map<String,BaseSessionInternal> sessionMap;
-    private Map<String,BaseSessionInternal> socketSessionMap;
+    private final Map<String,BaseSessionInternal> sessionMap;
+    private final Map<String,BaseSessionInternal> socketSessionMap;
 
     public SessionServiceImpl() {
         this.sessionMap = new ConcurrentHashMap<>();
@@ -114,7 +112,7 @@ public class SessionServiceImpl implements SessionService {
         }
     }
 
-    private class SessionProxyException extends RuntimeException {
+    private static class SessionProxyException extends RuntimeException {
 
         private SessionProxyException(String message, Throwable cause) {
             super(message, cause);

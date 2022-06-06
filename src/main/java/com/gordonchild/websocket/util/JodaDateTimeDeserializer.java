@@ -1,26 +1,24 @@
 package com.gordonchild.websocket.util;
 
-import java.io.IOException;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
-public class JodaDateTimeDeserializer extends JsonDeserializer<DateTime> {
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd'T'hh:mm:ss");
+public class JodaDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss");
 
     @Override
-    public DateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         if(JsonToken.VALUE_NULL.equals(p.getCurrentToken())) {
             return null;
         } else {
-            return FORMATTER.parseDateTime(p.getText());
+            return LocalDateTime.parse(p.getText(), FORMATTER);
         }
     }
 }

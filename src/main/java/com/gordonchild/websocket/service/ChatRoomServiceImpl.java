@@ -1,16 +1,5 @@
 package com.gordonchild.websocket.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
-
 import com.gordonchild.websocket.domain.event.ClearVotesEvent;
 import com.gordonchild.websocket.domain.event.JoinEvent;
 import com.gordonchild.websocket.domain.event.LeaveEvent;
@@ -31,6 +20,15 @@ import com.gordonchild.websocket.domain.request.UserTypingRequest;
 import com.gordonchild.websocket.domain.request.UserVoteRequest;
 import com.gordonchild.websocket.domain.server.ChatRoomInfo;
 import com.gordonchild.websocket.domain.session.ChatRoomSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service("chatRoomService")
 public class ChatRoomServiceImpl implements ChatRoomService {
@@ -39,13 +37,16 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     private static final String CHAT_TOPIC = "/topic/chats-";
 
-    private Map<String,ChatRoomInfo> rooms = new ConcurrentHashMap<>();
+    private final Map<String,ChatRoomInfo> rooms = new ConcurrentHashMap<>();
 
-    @Autowired
-    private SessionService sessionService;
+    private final SessionService sessionService;
 
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    public ChatRoomServiceImpl(SessionService sessionService, SimpMessagingTemplate simpMessagingTemplate) {
+        this.sessionService = sessionService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
+    }
 
     @Override
     public void sendMessage(SendMessageRequest request) {
