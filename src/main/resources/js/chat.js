@@ -1,6 +1,6 @@
 import SockJS from "sockjs-client";
 import Stomp from "stomp-websocket";
-import $ from "jquery";
+import $ from "./import-jquery";
 
 const chatController = {
     stompClient: null,

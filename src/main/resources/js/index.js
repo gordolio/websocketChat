@@ -1,8 +1,15 @@
-import $ from "jquery";
+import $ from "./import-jquery";
+
 import "bootstrap-sass";
 import "nanoscroller";
 import utils from "./utils";
 import chatController from "./chat";
+//import chatIcon from "../webapp/android-chrome-192x192.png";
+
+const chatIconUrl = new URL(
+    '../webapp/android-chrome-192x192.png',
+    import.meta.url
+);
 
 $(function() {
 
@@ -108,7 +115,7 @@ $(function() {
                 onJoin:function(joinMessage){
                     me.announce(joinMessage.username, " has joined");
                     $.each(joinMessage.allUsers,function(idx,user) {
-                        if($("#userId"+user.publicId).size() === 0) {
+                        if($("#userId"+user.publicId).length === 0) {
                             me.chatUsersDiv.append(
                                 $("<div></div>")
                                     .attr("id","userId"+user.publicId)
@@ -185,7 +192,7 @@ $(function() {
             } else if(Notification.permission === "granted") {
                 me.notifications.push(new Notification(user, {
                     body:body,
-                    icon:"/android-chrome-192x192.png"
+                    icon:chatIconUrl.toString()
                 }));
             } else if (Notification.permission !== "denied") {
                 Notification.requestPermission().then(function (permission) {
@@ -193,7 +200,7 @@ $(function() {
                     if (permission === "granted") {
                         me.notifications.push(new Notification(user,{
                             body:body,
-                            icon:"/android-chrome-192x192.png"
+                            icon:chatIconUrl.toString()
                         }));
                     }
                 });
@@ -279,7 +286,7 @@ $(function() {
         localStorage.setItem("room", room.val());
         controller.initChat(name.val(),room.val());
     });
-    $(window).unload(function(){
+    $(window).on("unload",function(){
         chatController.leaveRoom();
     });
     const name = localStorage.getItem("name");

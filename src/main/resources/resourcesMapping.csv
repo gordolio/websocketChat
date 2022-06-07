@@ -1,9 +1,12 @@
 /index.html               |classpath:/webappDist/index.html
 /error.html               |classpath:/webappDist/error.html
 /**.css                   |classpath:/webappDist/
+/**.css.map               |classpath:/webappDist/
 /**.js                    |classpath:/webappDist/
+/**.js.map                |classpath:/webappDist/
 /up_/**                   |classpath:/webappDist/up_/
 /static/**                |classpath:/webappDist/
+/fontawesome-webfont.*    |classpath:/webappDist/
 /android-chrome**.png     |classpath:/webappDist/
 /apple-touch-icon**.png   |classpath:/webappDist/
 /favicon**                |classpath:/webappDist/
