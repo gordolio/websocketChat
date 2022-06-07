@@ -1,4 +1,8 @@
-var chatController = {
+import SockJS from "sockjs-client";
+import Stomp from "stomp-websocket";
+import $ from "jquery";
+
+const chatController = {
     stompClient: null,
     userId:null,
     sessionId:null,
@@ -54,7 +58,7 @@ var chatController = {
     joinRoom:function(user,room) {
         this.username = user;
         this.roomName = room;
-        var me = this;
+        const me = this;
         $.ajax({
             url:"/startSession",
             contentType:"application/json;charset=UTF-8"
@@ -73,14 +77,14 @@ var chatController = {
         this.disconnect();
     },
     connect: function () {
-        var me = this;
-        var socket = new SockJS('/chat');
+        const me = this;
+        const socket = new SockJS('/chat');
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect({}, function () {
             me.setConnected(true);
             me.reconnectCount = 0;
             me.stompClient.subscribe('/topic/chats-'+me.roomName, function (message) {
-                var chatMessage = JSON.parse(message.body);
+                const chatMessage = JSON.parse(message.body);
                 me.showEvent(chatMessage);
             });
             me.stompClient.send("/chatApp/socketConnect",{},JSON.stringify({
@@ -102,16 +106,16 @@ var chatController = {
         this.connect();
     },
     disconnect: function () {
-            if (this.stompClient != null) {
-                try {
-                    this.stompClient.disconnect();
-                } catch(ex) {}
-                this.stompClient = null;
-            }
+        if (this.stompClient != null) {
+            try {
+                this.stompClient.disconnect();
+            } catch(ex) {}
+            this.stompClient = null;
+        }
         this.setConnected(false);
     },
     sendMessage: function (message) {
-        var data = {
+        const data = {
             "sessionId":this.sessionId,
             "roomName":this.roomName,
             "message":message
@@ -123,7 +127,7 @@ var chatController = {
         }
     },
     vote:function(vote){
-        var data = {
+        const data = {
             "sessionId":this.sessionId,
             "roomName":this.roomName,
             "vote":vote
@@ -131,23 +135,23 @@ var chatController = {
         this.stompClient.send("/chatApp/userVote", {}, JSON.stringify(data));
     },
     reveal:function() {
-        var data = {
+        const data = {
             "sessionId":this.sessionId,
             "roomName":this.roomName
         };
         this.stompClient.send("/chatApp/revealVotes", {}, JSON.stringify(data));
     },
     clear:function() {
-        var data = {
+        const data = {
             "sessionId":this.sessionId,
             "roomName":this.roomName
         };
         this.stompClient.send("/chatApp/clearVoting", {}, JSON.stringify(data));
     },
     typing:function() {
-        var me = this;
+        const me = this;
         if(me.typingSetTimeout == null) {
-            var data = {
+            const data = {
                 "sessionId":me.sessionId,
                 "roomName":me.roomName
             };
@@ -175,3 +179,5 @@ var chatController = {
         }
     }
 };
+
+export default chatController;

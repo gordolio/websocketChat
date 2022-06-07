@@ -5,6 +5,8 @@ build
 *.zip
 **.DS_Store
 
+.parcel-cache/
+
 node_modules
 src/main/resources/vendor
 src/main/resources/dist

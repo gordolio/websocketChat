@@ -5,28 +5,28 @@
  */
 
 // Core variables and mixins
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/variables";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/mixins";
 
 // Reset and dependencies
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/normalize";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/print";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/normalize";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/print";
 //@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/glyphicons";
 
 // Core CSS
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/type";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/code";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/grid";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/tables";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/forms";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/buttons";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/type";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/code";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/grid";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/tables";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/forms";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/buttons";
 
 // Components
 //@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/component-animations";
 //@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
 /*
 @import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/navs";
 @import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/navbar";
@@ -58,5 +58,5 @@
 */
 
 // Utility classes
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/utilities";
-@import "../vendor/bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/utilities";
+@import "bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";

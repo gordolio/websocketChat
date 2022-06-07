@@ -1,19 +1,12 @@
-$nanoClass: "nano-default";
-$paneClass: "nano-pane-default";
-$sliderClass: "nano-slider-default";
 
-@import "../vendor/nanoscroller/bin/css/nanoscroller";
-
+@import "nanoscroller/bin/css/nanoscroller";
 
 .nano {
-  @extend .#{$nanoClass};
 
   > .nano-pane {
-    @extend .#{$paneClass};
     margin: 5px;
 
     > .nano-slider {
-      @extend .#{$sliderClass};
       border-radius:5px;
       background: #111;
     }

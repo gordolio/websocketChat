@@ -1,5 +1,25 @@
+import $ from "jquery";
+import "bootstrap-sass";
+import "nanoscroller";
+import utils from "./utils";
+import chatController from "./chat";
+
 $(function() {
-    var controller = {
+
+    $.fn.extend({
+        animateCss: function (animationName, onComplete) {
+            const animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+            $(this).addClass('animated ' + animationName).one(animationEnd, function() {
+                if(typeof onComplete === 'function') {
+                    onComplete.call(this);
+                }
+                $(this).removeClass('animated ' + animationName);
+            });
+            return this;
+        }
+    });
+
+    const controller = {
         chatContentDiv:$("#chatInnerContent"),
         chatUsersDiv:$("#chatUsers"),
         typingFeedbackDiv:$("#typingFeedback"),
@@ -16,7 +36,7 @@ $(function() {
             }
         },
         createTypingTimeout:function(event){
-            var me = this;
+            const me = this;
             if(!utils.isEmpty(this.usersTypingTimeouts[event.publicId])) {
                 clearTimeout(this.usersTypingTimeouts[event.publicId].timeoutId);
             }
@@ -30,8 +50,8 @@ $(function() {
             this.renderTypingDiv();
         },
         renderTypingDiv:function(){
-            var text = "";
-            var count = 0;
+            let text = "";
+            let count = 0;
             $.each(this.usersTypingTimeouts,function(publicId,val){
                 if(count > 0) {
                     text += ", ";
@@ -49,13 +69,13 @@ $(function() {
             $(".nano").nanoScroller().nanoScroller({ scroll: 'bottom' });
         },
         initChat:function(username,room){
-            var me = this;
+            const me = this;
             chatController.init({
                 onConnect:function(){
                     $("#roomName").html(room);
                     $("#loginArea").animateCss("hideArea",function(){
                         $(this).css("display","none");
-                        var mainBlock = $("#mainBlock");
+                        const mainBlock = $("#mainBlock");
                         mainBlock.addClass("growMainArea").removeClass("loginBlock");
                         setTimeout(function() {
                             mainBlock.addClass("chatBlock");
@@ -141,7 +161,7 @@ $(function() {
                 .addClass("chatLine"));
         },
         notify:function(user, body) {
-            var me = this;
+            const me = this;
             if(user === chatController.username
                 || this.focused) {
                 return;
@@ -150,8 +170,8 @@ $(function() {
                 clearTimeout(me.titleTimeout);
                 delete me['titleTimeout'];
             }
-            var titleMessage = user + " said...";
-            var timeoutFunc = function() {
+            const titleMessage = user + " said...";
+            const timeoutFunc = function() {
                 if(document.title === titleMessage) {
                     document.title = "Hello WebSocket";
                 } else {
@@ -168,7 +188,7 @@ $(function() {
                     icon:"/android-chrome-192x192.png"
                 }));
             } else if (Notification.permission !== "denied") {
-                Notification.requestPermission(function (permission) {
+                Notification.requestPermission().then(function (permission) {
                     // If the user accepts, let's create a notification
                     if (permission === "granted") {
                         me.notifications.push(new Notification(user,{
@@ -187,7 +207,7 @@ $(function() {
             
         },
         sendTheMessage:function(){
-            var sendInput = $("#sendMessage");
+            const sendInput = $("#sendMessage");
             chatController.sendMessage(sendInput.val());
             sendInput.val("");
         },
@@ -201,8 +221,8 @@ $(function() {
         controller.focused = true;
         clearTimeout(controller.titleTimeout);
         document.title = "Hello WebSocket";
-        for(var idx=0;idx<controller.notifications.length;idx++) {
-            var n = controller.notifications[idx];
+        for(let idx=0;idx<controller.notifications.length;idx++) {
+            const n = controller.notifications[idx];
             if(n) {
                 n.close();
             }
@@ -222,7 +242,7 @@ $(function() {
         $(this).addClass("btn-primary").removeClass("btn-default");
     });
     $("#revealButton").click(function(){
-        var button = $(this).find("button");
+        const button = $(this).find("button");
         if(button.text() === 'Reveal') {
             chatController.reveal();
         } else {
@@ -241,8 +261,8 @@ $(function() {
         }
     });
     $("#startChat").click(function() {
-        var name = $("#name");
-        var room = $("#room");
+        const name = $("#name");
+        const room = $("#room");
         if(name.val() === '') {
             name.parent().addClass("has-error");
             name.animateCss('shake');
@@ -262,12 +282,12 @@ $(function() {
     $(window).unload(function(){
         chatController.leaveRoom();
     });
-    var name = localStorage.getItem("name");
-    var room = localStorage.getItem("room");
+    const name = localStorage.getItem("name");
+    const room = localStorage.getItem("room");
     if(!utils.isEmpty(name)) {
         $("#name").val(name);
     }
-    var hashValue = utils.getHashValue();
+    const hashValue = utils.getHashValue();
     if(!utils.isEmpty(hashValue)) {
         $("#room").val(hashValue);
     } else if(!utils.isEmpty(room)) {

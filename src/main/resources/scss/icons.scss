@@ -1,7 +1,9 @@
-@import "../vendor/font-awesome/scss/variables";
-$fa-font-path:"/vendor/font-awesome/fonts";
-@import "../vendor/font-awesome/scss/path";
-@import "../vendor/font-awesome/scss/mixins";
+
+$fa-font-path:"../../../../node_modules/font-awesome/fonts";
+
+@import "font-awesome/scss/variables";
+@import "font-awesome/scss/path";
+@import "font-awesome/scss/mixins";
 
 @mixin vote-icon() {
   @include fa-icon;

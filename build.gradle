@@ -1,13 +1,12 @@
 import org.apache.tools.ant.taskdefs.condition.Os
-import sass.embedded_protocol.EmbeddedSass
-
 
 plugins {
     id 'org.springframework.boot' version '2.7.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'com.github.ksoichiro.web.resource' version '1.7.3'
+    //id 'com.github.ksoichiro.web.resource' version '1.7.3'
     id 'java'
-    id "io.freefair.sass-war" version "6.4.3"
+    //id "io.freefair.sass-war" version "6.4.3"
+    id "com.github.node-gradle.node" version "3.3.0"
 }
 
 
@@ -15,19 +14,7 @@ plugins {
 //mainClassName = 'com.gordonchild.websocket.WebsocketsTest'
 
 
-apply from: 'gradle/bower.gradle'
-apply from: 'gradle/sass.gradle'
-
-
 version = '0.0.1'
-
-sass {
-    omitSourceMapUrl.set(false)
-    outputStyle = EmbeddedSass.OutputStyle.EXPANDED
-    sourceMapContents = false
-    sourceMapEmbed = false
-    sourceMapEnabled = true
-}
 
 java {
     toolchain {
@@ -61,9 +48,34 @@ dependencies {
     implementation 'org.javassist:javassist:3.29.0-GA'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'junit:junit'
-    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation 'org.mockito:mockito-core:4.5.1'
 }
+
+tasks.register("npmBuild", NpmTask) {
+    // install the express package only
+    dependsOn(tasks.npmInstall)
+    args = ['run', 'build']
+}
+
+tasks.register("createTemplateDirectory") {
+    doLast {
+        def dir = new File("$buildDir/resources/main/templates")
+        if(!dir.exists()) {
+            if(!dir.mkdirs()) {
+                throw RuntimeException("Could not create dirs")
+            }
+        }
+    }
+}
+
+tasks.register("copyViews", Copy) {
+    dependsOn(tasks.createTemplateDirectory, tasks.npmBuild)
+    from layout.buildDirectory.dir("resources/main/webappDist")
+    include "*.html"
+    into layout.buildDirectory.dir("resources/main/templates/")
+}
+tasks.processResources.dependsOn(tasks.copyViews)
 
 tasks.named('test') {
 	useJUnitPlatform()
