@@ -5,6 +5,8 @@ import com.gordonchild.websocket.domain.session.Session;
 import com.gordonchild.websocket.exception.SessionNotFoundException;
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -14,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service("sessionService")
 public class SessionServiceImpl implements SessionService {
+
+    private static final Logger log = LoggerFactory.getLogger(SessionServiceImpl.class);
 
     private final Map<String,BaseSessionInternal> sessionMap;
     private final Map<String,BaseSessionInternal> socketSessionMap;
@@ -29,6 +33,7 @@ public class SessionServiceImpl implements SessionService {
         baseSession.setSessionId(StringUtils.randomAlphanumeric(10));
         baseSession.setPublicId(StringUtils.randomAlphanumeric(10));
         this.sessionMap.put(baseSession.getSessionId(), baseSession);
+        log.info("Starting session: {}", baseSession.toLoggingString());
         return baseSession;
     }
 

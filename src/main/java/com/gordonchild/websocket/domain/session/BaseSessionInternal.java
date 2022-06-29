@@ -1,9 +1,9 @@
 package com.gordonchild.websocket.domain.session;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class BaseSessionInternal implements Session {
 
@@ -13,6 +13,12 @@ public class BaseSessionInternal implements Session {
     private String socketSessionId;
     @JsonIgnore
     private Map<String,Object> data = new ConcurrentHashMap<>();
+
+    public String toLoggingString() {
+        var sb = new StringBuilder().append("Session: ").append(this.sessionId).append(" PublicId: ").append(this.publicId).append(" SocketSessionId: ").append(this.socketSessionId);
+        data.forEach((key, value) -> sb.append(" ").append(key).append("=").append(value));
+        return sb.toString();
+    }
 
     @Override
     public String getSessionId() {
