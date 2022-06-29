@@ -6,7 +6,7 @@ plugins {
     //id 'com.github.ksoichiro.web.resource' version '1.7.3'
     id 'java'
     //id "io.freefair.sass-war" version "6.4.3"
-    id "com.github.node-gradle.node" version "3.3.0"
+    id "com.github.node-gradle.node" version "3.4.0"
 }
 
 

@@ -1,5 +1,4 @@
 /index.html               |classpath:/webappDist/index.html
-/error.html               |classpath:/webappDist/error.html
 /**.css                   |classpath:/webappDist/
 /**.css.map               |classpath:/webappDist/
 /**.js                    |classpath:/webappDist/

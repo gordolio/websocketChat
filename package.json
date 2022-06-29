@@ -9,19 +9,21 @@
     "type": "git",
     "url": "git+https://github.com/gordolio/websocketChat.git"
   },
+  "engines": {
+    "node": ">=16.15.1"
+  },
   "author": "Gordon Child",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/gordolio/websocketChat/issues"
   },
   "homepage": "https://github.com/gordolio/websocketChat#readme",
-  "source": [
-    "src/main/resources/templatesSource/index.html",
-    "src/main/resources/templatesSource/error.html"
-  ],
+  "source": "src/main/resources/templatesSource/index.html",
   "targets": {
-    "default": {
-      "distDir": "./build/resources/main/webappDist"
+    "web": {
+      "distDir": "./build/resources/main/webappDist",
+      "source": "./src/main/resources/templatesSource/index.html",
+      "context": "browser"
     }
   },
   "dependencies": {
@@ -36,10 +38,10 @@
     "stomp-websocket": "^2.3.4-next"
   },
   "devDependencies": {
-    "@parcel/packager-raw-url": "^2.6.0",
-    "@parcel/transformer-sass": "^2.6.0",
-    "@parcel/transformer-webmanifest": "^2.6.0",
-    "parcel": "^2.6.0",
+    "@parcel/packager-raw-url": "^2.6.2",
+    "@parcel/transformer-sass": "^2.6.2",
+    "@parcel/transformer-webmanifest": "^2.6.2",
+    "parcel": "^2.6.2",
     "process": "^0.11.10"
   }
 }
